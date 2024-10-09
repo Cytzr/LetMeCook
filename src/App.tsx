@@ -1,10 +1,10 @@
+import CustomNavbar from "./Components/navbar"
+
 function App() {
 
   return (
     <>
-      <p>
-        Hello there
-      </p>
+      <CustomNavbar />
     </>
   )
 }
