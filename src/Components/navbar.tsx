@@ -1,23 +1,29 @@
 function CustomNavbar() {
     return (
-        <nav className="navbar justify-content-between navbar-expand-lg navbar-light bg-light">
-            <div className="container-fluid">
-                <a href="/" className="navbar-brand">
-                    <img src="..\src\Images\AppIconHalf.png" alt="" height={40} />
-                </a>
-            </div>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div className="navbar-nav">
-                    <a className="nav-item nav-link active" href="#">Home</a>
-                    <a className="nav-item nav-link" href="#">Features</a>
-                    <a className="nav-item nav-link" href="#">Pricing</a>
-                    <a className="nav-item nav-link disabled" href="#">Disabled</a>
+        <div className="container-fluid">
+            <div className="row d-flex justify-content-between align-items-center text-center">
+                <div className="col-8">
+                    <div className="row dp-flex align-items-center fw-bold">
+                        <div className="col">
+                            <a href="/" className="navbar-brand">
+                                <img src="..\src\Images\AppIconHalf.png" alt="" height={40} />
+                            </a>
+                        </div>
+                        <div className="col">Recipes</div>
+                        <div className="col">Ingredients</div>
+                        <div className="col">Our Experts</div>
+                        <div className="col">About Us</div>
+                    </div>
+                </div>
+                <div className="col-4">
+                    <div className="row dp-flex align-items-center">
+                        <div className="col"><img src="..\src\Images\SaveIcon.png" alt="" /></div>
+                        <div className="col">Sign in</div>
+                        <div className="col">Premium</div>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
     )
 }
 
