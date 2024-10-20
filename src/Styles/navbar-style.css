@@ -1,0 +1,58 @@
+.main-container {
+    padding: 1vw;
+}
+
+.navbar-button {
+    border: none;
+    background: white;
+    border-bottom: solid black 0.1vw;
+}
+
+.navbar-button {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.navbar-button::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: #000;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.navbar-button:hover::after {
+    transform: scaleX(0.87);
+}
+
+
+.save-icon {
+    border: none;
+    background: white;
+    height: 1.5vw;
+}
+
+.save-button,
+.username-button {
+    border: none;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.premium-button {
+    border: none;
+    background: white;
+}
