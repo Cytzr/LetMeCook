@@ -11,13 +11,13 @@ interface HomePageProps {
 const HomePageCard: React.FC<HomePageProps> = ({ FoodName, SavedBy, TotalCalorie, ImageLink, FoodDescription }) => {
     return (
         <>
-            <Card className="shadow-sm" style={{ maxWidth: '650px' }}>
+            <Card className="shadow-sm" style={{ maxWidth: '650px', maxHeight: "330px", minHeight: "300px" }}>
                 <Row className="g-0">
                     <Col md={5} className='d-flex align-items-stretch'>
                         <Card.Img
                             src={ImageLink}
-                            alt="Honey Chicken"
-                            className="img-fluid rounded-start w-100 h-100 object-fit-none"
+                            alt={FoodName}
+                            className="img-fluid rounded-start w-100 object-fit-none"
                         />
                     </Col>
                     <Col md={7}>
