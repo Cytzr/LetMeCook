@@ -1,10 +1,11 @@
 import { useLocation } from 'react-router-dom';
 import '../Styles/navbar-style.css'
+import { Dropdown } from 'react-bootstrap';
 
 function CustomNavbar() {
     const location = useLocation();
 
-    console.log(location);
+    const isActive = (path: string) => location.pathname === path;
 
     return (
         <div className="container-fluid main-container">
@@ -17,16 +18,16 @@ function CustomNavbar() {
                             </a>
                         </div>
                         <div className="col">
-                            <button className='navbar-button'>Recipes</button>
+                            <a href="/recipes"><button className={`navbar-button ${isActive('/recipes') ? 'active' : ''}`}>Recipes</button></a>
                         </div>
                         <div className="col">
-                            <button className='navbar-button'>Ingredients</button>
+                            <a href="/ingredients"><button className={`navbar-button ${isActive('/ingredients') ? 'active' : ''}`}>Ingredients</button></a>
                         </div>
                         <div className="col">
-                            <button className='navbar-button'>Our Experts</button>
+                            <a href="/experts"><button className={`navbar-button ${isActive('/experts') ? 'active' : ''}`}>Our Experts</button></a>
                         </div>
                         <div className="col">
-                            <button className='navbar-button'>About Us</button>
+                            <a href="/about-us"><button className={`navbar-button ${isActive('/about-us') ? 'active' : ''}`}>About Us</button></a>
                         </div>
                     </div>
                 </div>
@@ -40,20 +41,25 @@ function CustomNavbar() {
 
                         {/* conditional rendering based on local storage available */}
                         <div className="col">
-                            <button className='premium-button'>
-                                Premium
-                            </button>
+                            <a href="/premium">
+                                <button className='premium-button'>
+                                    <div className="premium-text">Premium</div>
+                                </button>
+                            </a>
                         </div>
                         <div className="col d-flex flex-row align-items-center justify-content-end">
-                            <div className="col-2">
-                                <button className='save-button'>
-                                    <img src="..\src\Images\SaveIcon.png" alt="" className="img-fluid save-icon" />
-                                </button>
-                            </div>
-                            <div className="col-10">
-                                <button className='username-button'>Username</button>
-                            </div>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                    Username
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="/user-id/saved-menu">Saved Menu</Dropdown.Item>
+                                    <Dropdown.Item href="#">Logout</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </div>
+
                     </div>
                 </div>
             </div>

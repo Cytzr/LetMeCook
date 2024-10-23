@@ -12,7 +12,8 @@
     position: relative;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 1.1vw;
+    font-weight: 500;
     color: #000;
     cursor: pointer;
     text-decoration: none;
@@ -30,10 +31,10 @@
     transition: transform 0.3s ease;
 }
 
-.navbar-button:hover::after {
+.navbar-button:hover::after,
+.navbar-button.active::after {
     transform: scaleX(0.87);
 }
-
 
 .save-icon {
     border: none;
@@ -55,4 +56,54 @@
 .premium-button {
     border: none;
     background: white;
+}
+
+.premium-button {
+    width: 6.5em;
+    height: 2.3em;
+    margin: 0.5em;
+    background: linear-gradient(to top right, red, blue);
+    color: white;
+    border: none;
+    border-radius: 0.625em;
+    font-size: 1.1vw;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.premium-button:hover,
+.premium-text:hover {
+    color: black;
+    background: linear-gradient(to top right, red, blue);
+}
+
+.premium-text:hover {
+    color: transparent;
+    background-clip: text;
+}
+
+.premium-button:after {
+    content: "";
+    background: white;
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+}
+
+.premium-button:hover:after {
+    transform: skewX(-45deg) scale(1, 1);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.premium-button text:hover:after {
+    z-index: 100;
 }
