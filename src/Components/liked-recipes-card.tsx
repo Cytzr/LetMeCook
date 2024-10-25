@@ -1,12 +1,11 @@
-import { Card } from 'react-bootstrap'
+import { Card, Col, Row } from "react-bootstrap";
 
-interface PopularRecipesProps {
+interface LikedRecipesProps {
     FoodName: string,
     ImageLink: string,
-    TotalCalorie: number,
 }
 
-const PopularRecipesCard: React.FC<PopularRecipesProps> = ({ FoodName, ImageLink, TotalCalorie }) => {
+const LikedRecipesCard: React.FC<LikedRecipesProps> = ({ FoodName, ImageLink }) => {
     return (
         <>
             <Card className='shadow-sm' style={{ width: '225px' }}>
@@ -20,13 +19,19 @@ const PopularRecipesCard: React.FC<PopularRecipesProps> = ({ FoodName, ImageLink
                     <Card.Title className='mb-3 text-center'>
                         {FoodName}
                     </Card.Title>
-                    <Card.Subtitle className='fw-semibold text-muted fs-6 text-center'>
-                        {TotalCalorie} Cal
-                    </Card.Subtitle>
+                    <Row>
+                        <Col></Col>
+                        <Col>
+                            <button className="btn-dark btn rounded-pill px-4 fw-bold" style={{ fontSize: "1vw" }}>
+                                Remove
+                            </button>
+                        </Col>
+                        <Col></Col>
+                    </Row>
                 </Card.Body>
             </Card>
         </>
-    );
+    )
 }
 
-export default PopularRecipesCard
+export default LikedRecipesCard;
