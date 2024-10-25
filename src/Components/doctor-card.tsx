@@ -1,10 +1,5 @@
 import { Card } from "react-bootstrap";
-
-interface DoctorCardProps {
-    DoctorName: string,
-    ImageLink: string,
-    DoctorTitle: string,
-}
+import DoctorCardProps from "../Interfaces/doctor-card-props";
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ DoctorName, ImageLink, DoctorTitle }) => {
     return (

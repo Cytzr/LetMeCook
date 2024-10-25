@@ -1,11 +1,7 @@
 import { Card, Col, Row } from "react-bootstrap";
+import LikedRecipesCardProps from "../Interfaces/liked-recipes-card-props";
 
-interface LikedRecipesProps {
-    FoodName: string,
-    ImageLink: string,
-}
-
-const LikedRecipesCard: React.FC<LikedRecipesProps> = ({ FoodName, ImageLink }) => {
+const LikedRecipesCard: React.FC<LikedRecipesCardProps> = ({ FoodName, ImageLink }) => {
     return (
         <>
             <Card className='shadow-sm' style={{ width: '225px' }}>

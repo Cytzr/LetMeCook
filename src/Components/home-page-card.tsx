@@ -1,14 +1,7 @@
 import { Card, Col, Row } from 'react-bootstrap'
+import HomePageCardProps from '../Interfaces/home-page-card-props';
 
-interface HomePageProps {
-    FoodName: string,
-    SavedBy: number,
-    TotalCalorie: number,
-    ImageLink: string,
-    FoodDescription: string,
-}
-
-const HomePageCard: React.FC<HomePageProps> = ({ FoodName, SavedBy, TotalCalorie, ImageLink, FoodDescription }) => {
+const HomePageCard: React.FC<HomePageCardProps> = ({ FoodName, SavedBy, TotalCalorie, ImageLink, FoodDescription }) => {
     return (
         <>
             <Card className="shadow-sm" style={{ maxWidth: '650px', maxHeight: "330px", minHeight: "300px" }}>

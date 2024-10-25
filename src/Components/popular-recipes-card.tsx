@@ -1,12 +1,7 @@
 import { Card } from 'react-bootstrap'
+import PopularRecipesCardProps from '../Interfaces/popular-recipes-card-props';
 
-interface PopularRecipesProps {
-    FoodName: string,
-    ImageLink: string,
-    TotalCalorie: number,
-}
-
-const PopularRecipesCard: React.FC<PopularRecipesProps> = ({ FoodName, ImageLink, TotalCalorie }) => {
+const PopularRecipesCard: React.FC<PopularRecipesCardProps> = ({ FoodName, ImageLink, TotalCalorie }) => {
     return (
         <>
             <Card className='shadow-sm' style={{ width: '225px' }}>
