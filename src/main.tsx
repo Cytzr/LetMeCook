@@ -4,6 +4,7 @@ import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './Styles/styles.css'
 import './Styles/footer.css'
+import IngredientsPage from './Pages/IngredientsPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/ingredients",
-    element: <App />
+    element: <IngredientsPage />
   },
   {
     path: "/experts",
