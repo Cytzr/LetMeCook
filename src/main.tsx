@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './Styles/styles.css'
 import './Styles/footer.css'
 import IngredientsPage from './Pages/IngredientsPage.tsx'
+import RecipesPage from './Pages/RecipesPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/recipes",
-    element: <App />
+    element: <RecipesPage />
   },
   {
     path: "/ingredients",

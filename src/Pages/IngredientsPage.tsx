@@ -30,11 +30,14 @@ const TempData: IngredientsCardProps[] = [
 ];
 
 function IngredientsPage() {
-    const [Selected, setSelected] = useState(1);
+    const [Selected, setSelected] = useState(0);
 
     return (
         <>
             <CustomNavbar />
+            <Container fluid className="text-center">
+                <p onClick={() => setSelected(0)} className="fw-semibold fs-3">Pick Your Ingredients</p>
+            </Container>
             <Container fluid className="d-flex flex-row align-items-center justify-content-between w-100 px-5 pb-2" style={{ borderBottom: "1px solid rgb(230, 230, 230)" }}>
                 {IngredientItems.map((item) => (
                     <button onClick={() => setSelected(item.ItemNumber)} className={`${Selected == item.ItemNumber ? "active" : ""} navbar-button ps-0 pe-2 d-flex flex-row align-items-center justify-content-between`} style={{ maxWidth: "100px", backgroundColor: "white", maxHeight: "30px" }}>
