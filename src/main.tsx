@@ -5,6 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './Styles/styles.css'
 import './Styles/footer.css'
 import IngredientsPage from './Pages/IngredientsPage.tsx'
+import Login from './Pages/login.tsx'
+import Register from './Pages/register.tsx'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "/about-us",
     element: <App />
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register/>
   }
 ])
 
