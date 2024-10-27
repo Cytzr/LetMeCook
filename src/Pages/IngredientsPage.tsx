@@ -1,4 +1,4 @@
-// import Footer from "../Components/footer";
+import Footer from "../Components/footer";
 import { Col, Container, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
 import { useState } from "react";
@@ -34,32 +34,52 @@ function IngredientsPage() {
 
     return (
         <>
-            <CustomNavbar />
-            <Container fluid className="text-center">
-                <p onClick={() => setSelected(0)} className="fw-semibold fs-3">Pick Your Ingredients</p>
-            </Container>
-            <Container fluid className="d-flex flex-row align-items-center justify-content-between w-100 px-5 pb-2" style={{ borderBottom: "1px solid rgb(230, 230, 230)" }}>
-                {IngredientItems.map((item) => (
-                    <button onClick={() => setSelected(item.ItemNumber)} className={`${Selected == item.ItemNumber ? "active" : ""} navbar-button ps-0 pe-2 d-flex flex-row align-items-center justify-content-between`} style={{ maxWidth: "100px", backgroundColor: "white", maxHeight: "30px" }}>
-                        <Col className="d-flex flex-row align-items-center justify-content-between">
-                            <div className="d-flex flex-row align-items-center justify-content-center px-1">
-                                <img src={item.LinkIcon} alt={item.Label} width={20} />
-                            </div>
-                            {item.Label}
-                        </Col>
-                    </button>
-                ))}
-            </Container>
-            <Container fluid>
-                <Row>
-                    {TempData.map((data, key) => (
-                        <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
-                            <IngredientsCard ImageLink={data.ImageLink} IngredientDescription={data.IngredientDescription} IngredientName={data.IngredientName} IngredientWeightPerPorsion={data.IngredientWeightPerPorsion} NutrientsContained={data.NutrientsContained} TotalCalorie={data.TotalCalorie} key={key} />
-                        </Col>
+            <Container fluid className="position-relative">
+                <CustomNavbar />
+                <Container fluid className="text-center">
+                    <p onClick={() => setSelected(0)} className="fw-semibold fs-3">Pick Your Ingredients</p>
+                </Container>
+                <Container fluid className="d-flex flex-row align-items-center justify-content-between w-100 px-5 pb-2" style={{ borderBottom: "1px solid rgb(230, 230, 230)" }}>
+                    {IngredientItems.map((item) => (
+                        <button onClick={() => setSelected(item.ItemNumber)} className={`${Selected == item.ItemNumber ? "active" : ""} navbar-button ps-0 pe-2 d-flex flex-row align-items-center justify-content-between`} style={{ maxWidth: "100px", backgroundColor: "white", maxHeight: "30px" }}>
+                            <Col className="d-flex flex-row align-items-center justify-content-between">
+                                <div className="d-flex flex-row align-items-center justify-content-center px-1">
+                                    <img src={item.LinkIcon} alt={item.Label} width={20} />
+                                </div>
+                                {item.Label}
+                            </Col>
+                        </button>
                     ))}
-                </Row>
+                </Container>
+                <Container fluid>
+                    <Row>
+                        {TempData.map((data, key) => (
+                            <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
+                                <IngredientsCard ImageLink={data.ImageLink} IngredientDescription={data.IngredientDescription} IngredientName={data.IngredientName} IngredientWeightPerPorsion={data.IngredientWeightPerPorsion} NutrientsContained={data.NutrientsContained} TotalCalorie={data.TotalCalorie} key={key} />
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
+                <Footer />
+                <Container
+                    fluid
+                    className="sticky-footer d-flex align-items-center justify-content-center rounded-pill"
+                    style={{
+                        position: 'fixed',
+                        bottom: "2%",
+                        left: "50%",
+                        transform: 'translateX(-50%)',
+                        translate: 'translateX(-50%)',
+                        width: '90%',
+                        height: '10%',
+                        backgroundColor: '#333',
+                        color: 'white',
+                        zIndex: 1000,
+                    }}
+                >
+                    <p className="m-0">I am a sticky footer that follows as you scroll!</p>
+                </Container>
             </Container>
-            {/* <Footer /> */}
         </>
     )
 }
