@@ -1,0 +1,55 @@
+.budi{
+    margin: 0;
+    padding: 0;
+    background-image: url('../Images/loginBG.png');
+    background-size: 110% 112%;
+    background-position: center;
+}
+
+    .login .register{
+        text-decoration: none;
+        color: red;
+        font-weight: 500;
+    }
+
+    .login h4{
+        font-weight: bold;
+        color: #2E2E2E;
+    }
+
+    .login .sideimage .img{
+        min-height: auto;
+        width: 90%;
+    }
+
+    .login input{
+        font-size: 16px;
+        font-weight: 650;
+        border-radius: 8    px;
+        border-color: #2E2E2E;
+        color: #2E2E2E;
+    }
+
+    .login .btn{
+        border-color: #2E2E2E;
+        color: #2E2E2E;
+        font-size: 18px;
+        font-weight: 650;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .login button:hover{
+        background-color: #b4b4b4;
+    }
+
+.login a{
+    color: red;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login img{
+    width: 100%;
+    height: auto;
+}
