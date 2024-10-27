@@ -107,3 +107,6 @@
 .premium-button text:hover:after {
     z-index: 100;
 }
+.cursor-pointer {
+    cursor: pointer;
+}
