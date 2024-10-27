@@ -1,14 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import '../Styles/login-signup.css'
-import { Container, FloatingLabel, Row, Col, Button } from 'react-bootstrap';
+import { Container, FloatingLabel, Col, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 function Register() {
-    const navigate = useNavigate();
-    var sectionStyle = {
-        backgroundImage: `url(./src/Images/loginBG.png)`,
-    };
-
     return (
         <body className='budi d-flex justify-content-center'>
                 <Container className='bg-white m-5 p-0'>
@@ -42,11 +36,6 @@ function Register() {
                     </div>
             </Container>
         </body>
-        
-            
-        // <Container fluid style={sectionStyle} className=''>
-        
-        // </Container>
     )
 }
 
