@@ -2,6 +2,8 @@ import { Carousel, Col, Container, Form, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
 import Footer from "../Components/footer";
 import React, { useState } from "react";
+import YouMightLikeCardProps from "../Interfaces/you-might-like-card-props";
+import YouMightLikeCard from "../Components/you-might-like-card";
 
 interface RecipesOptionFilter {
     value: string;
@@ -26,6 +28,13 @@ const ReccomendedItems: ReccomendedItemsInterface[] = [
     { FoodName: "Burger 1", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id1", FoodImage: "../src/Images/Burger.jpg" },
     { FoodName: "Burger 2", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id2", FoodImage: "../src/Images/Burger.jpg" },
     { FoodName: "Burger 3", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id3", FoodImage: "../src/Images/Burger.jpg" },
+];
+
+const YouMightLikeItems: YouMightLikeCardProps[] = [
+    { FoodID: 1, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
+    { FoodID: 2, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
+    { FoodID: 3, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
+    { FoodID: 4, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
 ];
 
 export default function RecipesPage() {
@@ -85,10 +94,15 @@ export default function RecipesPage() {
                     <p className="fw-semibold fs-3 m-0">You Might Like</p>
                 </Col>
             </Container>
-            <Container fluid className="mb-4">
-
+            <Container fluid>
+                <Row>
+                    {YouMightLikeItems.map((item, key) => (
+                        <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
+                            <YouMightLikeCard FoodCookTime={item.FoodCookTime} FoodDescription={item.FoodDescription} FoodID={item.FoodID} FoodName={item.FoodName} ImageLink={item.ImageLink} key={key} />
+                        </Col>
+                    ))}
+                </Row>
             </Container>
-
             <Footer />
         </>
     )

@@ -1,5 +1,5 @@
 export default interface YouMightLikeCardProps {
-    FoodID: string,
+    FoodID: number,
     FoodName: string,
     FoodDescription: string,
     FoodCookTime: number,
