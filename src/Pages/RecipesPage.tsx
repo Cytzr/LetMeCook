@@ -4,6 +4,7 @@ import Footer from "../Components/footer";
 import React, { useState } from "react";
 import YouMightLikeCardProps from "../Interfaces/you-might-like-card-props";
 import YouMightLikeCard from "../Components/you-might-like-card";
+import SearchBar from "../Components/search-bar";
 
 interface RecipesOptionFilter {
     value: string;
@@ -44,6 +45,10 @@ export default function RecipesPage() {
         setSelectedFilter(e.target.value);
     }
 
+    const [searchBarValue, setSearchBarValue] = useState("");
+
+    console.log(searchBarValue);
+
     return (
         <>
             <CustomNavbar />
@@ -67,7 +72,7 @@ export default function RecipesPage() {
                     </Col>
                     <Col></Col>
                     <Col className="pt-2">
-                        Search Bar
+                        <SearchBar onSearchChange={setSearchBarValue} />
                     </Col>
                 </Row>
             </Container>
