@@ -39,14 +39,17 @@ function CalculateCalories(Array: IngredientProps[]): number {
     return totalCalorie;
 }
 
-function FindUniqueNutrients(Array: IngredientProps[]): String[] {
-    let Nutrient: string[] = []
+function FindUniqueNutrients(Array: IngredientProps[]): string[] {
+    const Nutrient: string[] = [];
 
     for (let index = 0; index < Array.length; index++) {
         for (let index2 = 0; index < Array[index].NutrientsContained.length; index2++) {
-
+            if (!Nutrient.find((item) => item === Array[index].NutrientsContained[index2])) {
+                Nutrient.push(Array[index].NutrientsContained[index2]);
+            }
         }
     }
+    return Nutrient;
 }
 
 function IngredientsPage() {
@@ -84,8 +87,6 @@ function IngredientsPage() {
             }
         });
     };
-
-    console.log(Cart);
 
     return (
         <>
@@ -125,7 +126,7 @@ function IngredientsPage() {
                     </Row>
                 </Container>
                 <Footer />
-                <Container
+                {Cart.length == 0 ? <div></div> : <Container
                     fluid
                     className="sticky-footer d-flex align-items-center justify-content-between rounded"
                     style={{
@@ -161,7 +162,7 @@ function IngredientsPage() {
                             </Col>
                         </Row>
                     </Col>
-                </Container>
+                </Container>}
             </Container>
         </>
     )
