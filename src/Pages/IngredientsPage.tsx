@@ -1,10 +1,12 @@
 import Footer from "../Components/footer";
 import { Col, Container, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import IngredientButtonProps from "../Interfaces/ingredients-button-props";
 import IngredientsCard from "../Components/ingredients-card";
 import { IngredientProps } from "../Interfaces/ingredients-card-props";
+import { MdFastfood } from "react-icons/md";
+import { GoTriangleDown } from "react-icons/go";
 
 const IngredientItems: IngredientButtonProps[] = [
     { Label: "Protein", LinkIcon: "../src/Images/protein-icon.png", ItemNumber: 1 },
@@ -29,33 +31,28 @@ const TempData = [
     { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "10" }
 ];
 
+function CalculateCalories(Array: IngredientProps[]): number {
+    let totalCalorie = 0;
+    for (let index = 0; index < Array.length; index++) {
+        totalCalorie += (Array[index].IngredientAmount * Array[index].IngredientWeightPerPorsion)
+    }
+    return totalCalorie;
+}
+
+function FindUniqueNutrients(Array: IngredientProps[]): String[] {
+    let Nutrient: string[] = []
+
+    for (let index = 0; index < Array.length; index++) {
+        for (let index2 = 0; index < Array[index].NutrientsContained.length; index2++) {
+
+        }
+    }
+}
+
 function IngredientsPage() {
     const [Selected, setSelected] = useState(0);
 
     const [Cart, setCart] = useState<IngredientProps[]>([]);
-
-    // const cartChange = (Ingredient: IngredientProps, Action: string) => {
-    //     setCart((prevCart) => {
-    //         const existingItemIndex = prevCart.findIndex((item) => item.IngredientID === Ingredient.IngredientID);
-
-    //         if (existingItemIndex >= 0) {
-    //             const updatedCart = [...prevCart];
-    //             const existingItem = updatedCart[existingItemIndex];
-    //             const newAmount = Action === "Add" ? existingItem.IngredientAmount + 1 : Math.max(existingItem.IngredientAmount - 1, 0);
-
-    //             updatedCart[existingItemIndex] = {
-    //                 ...existingItem,
-    //                 IngredientAmount: newAmount
-    //             };
-    //             return updatedCart;
-    //         } else {
-    //             return [
-    //                 ...prevCart,
-    //                 { ...Ingredient, IngredientAmount: Action === "Add" ? 1 : 0 }
-    //             ];
-    //         }
-    //     });
-    // }
 
     const cartChange = (Ingredient: IngredientProps, Action: string) => {
         setCart((prevCart) => {
@@ -87,7 +84,6 @@ function IngredientsPage() {
             }
         });
     };
-
 
     console.log(Cart);
 
@@ -131,21 +127,40 @@ function IngredientsPage() {
                 <Footer />
                 <Container
                     fluid
-                    className="sticky-footer d-flex align-items-center justify-content-center rounded-pill"
+                    className="sticky-footer d-flex align-items-center justify-content-between rounded"
                     style={{
                         position: 'fixed',
-                        bottom: "2%",
+                        bottom: "3%",
                         left: "50%",
                         transform: 'translateX(-50%)',
                         translate: 'translateX(-50%)',
-                        width: '90%',
+                        width: '50%',
                         height: '10%',
                         backgroundColor: '#333',
                         color: 'white',
                         zIndex: 1000,
                     }}
                 >
-                    <p className="m-0">I am a sticky footer that follows as you scroll!</p>
+                    <Col>
+                        <Row>
+                            <Col className="d-flex align-items-center justify-content-start">
+                                <MdFastfood />
+                                <div style={{ width: "0.5vw" }}></div>
+                                Calories: {CalculateCalories(Cart)} Cal
+                                <div style={{ width: "0.25vw" }}></div>
+                                <GoTriangleDown onClick={() => { }} />
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col>
+                        <Row>
+                            <Col className="d-flex align-items-center justify-content-end">
+                                <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
+                                <div style={{ width: "1vw" }}></div>
+                                <button type="button" className="btn btn-secondary rounded-pill px-4">Post Recipe</button>
+                            </Col>
+                        </Row>
+                    </Col>
                 </Container>
             </Container>
         </>
