@@ -1,49 +1,79 @@
 import { Carousel, Col, Container, Form, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
 import Footer from "../Components/footer";
-import React, { useState } from "react";
-import YouMightLikeCardProps from "../Interfaces/you-might-like-card-props";
+import React, { useState, useEffect } from "react";
 import YouMightLikeCard from "../Components/you-might-like-card";
+import axios from "axios";
 
-interface RecipesOptionFilter {
-    value: string;
-    label: string;
+interface CategoryInterface {
+    category_id: number;
+    category_name: string;
 }
-
-const options: RecipesOptionFilter[] = [
-    { value: "all", label: "All" },
-    { value: "beef", label: "Beef" },
-    { value: "shrimp", label: "Shrimp" },
-    { value: "lamb", label: "Lamb" },
-];
-
-interface ReccomendedItemsInterface {
-    FoodName: string,
-    FoodID: string,
-    FoodImage: string,
-    FoodDescription: string,
+interface RecipeInterface {
+    recipe_name: string;
+    recipe_id: number;
+    recipe_image: string | null;
+    recipe_description: string | null;
+    cook_time: number;
+    calories: number;
 }
-
-const ReccomendedItems: ReccomendedItemsInterface[] = [
-    { FoodName: "Burger 1", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id1", FoodImage: "../src/Images/Burger.jpg" },
-    { FoodName: "Burger 2", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id2", FoodImage: "../src/Images/Burger.jpg" },
-    { FoodName: "Burger 3", FoodDescription: "Warm, Juicy and Delicious Burger", FoodID: "This is id3", FoodImage: "../src/Images/Burger.jpg" },
-];
-
-const YouMightLikeItems: YouMightLikeCardProps[] = [
-    { FoodID: 1, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
-    { FoodID: 2, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
-    { FoodID: 3, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
-    { FoodID: 4, FoodCookTime: 20, FoodDescription: "Start your day with a bowl of wholesome, creamy porridge made from premium grains and cooked to perfection", FoodName: "Bubur Ayam", ImageLink: "../src/Images/HoneyChicken.png" },
-];
-
 export default function RecipesPage() {
-    const [selectedFilter, setSelectedFilter] = useState('all');
+    const [selectedFilter, setSelectedFilter] = useState(0);
+    const [popularItems, setPopularItems] = useState<RecipeInterface[]>([]);
+    const [recipeList, setRecipeList] = useState<RecipeInterface[]>([]);
+    const [categoryList, setCategoryList] = useState<CategoryInterface[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const handleSearchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSearchTerm(value);
 
+        getRecipeList(selectedFilter, value);
+    };
     const handleSelectedFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedFilter(e.target.value);
-    }
+        const currentValue = parseInt(e.target.value);
+        setSelectedFilter(currentValue);
 
+        getRecipeList(currentValue, searchTerm);
+    };
+    const getPopularRecipeList = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/recipe/get-popular');
+            setPopularItems(response.data.data as RecipeInterface[]);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+    const getRecipeList = async (category_id : number, search: string) => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/recipe/all', {
+                category_id: category_id !== 0 ? category_id : null,
+                search: search,
+            });
+            if (response.data.error === 1) {
+                setCategoryList([]);
+            }
+            setRecipeList(response.data.data as RecipeInterface[]);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+    const getCategoryList = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/ingredient/category-list', {});
+            const categories = response.data.data as CategoryInterface[];
+            const updatedCategories = [{ category_id: null, category_name: "All" }, ...categories] as CategoryInterface[];
+
+            setCategoryList(updatedCategories);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+
+    useEffect(() => {
+        getPopularRecipeList()
+        getRecipeList(0, "");
+        getCategoryList();
+    }, []);
     return (
         <>
             <CustomNavbar />
@@ -56,8 +86,8 @@ export default function RecipesPage() {
                                 handleSelectedFilter(event);
                             }}
                         >
-                            {options.map((item, key) => (
-                                <option key={key} value={item.value}>{item.label}</option>
+                            {categoryList.map((item, key) => (
+                                <option key={key} value={item.category_id}>{item.category_name}</option>
                             ))}
                         </Form.Select>
                     </Col>
@@ -67,22 +97,27 @@ export default function RecipesPage() {
                     </Col>
                     <Col></Col>
                     <Col className="pt-2">
-                        Search Bar
+                        <Form.Control
+                            type="text"
+                            placeholder="Search..."
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
                     </Col>
                 </Row>
             </Container>
             <Container fluid className="px-0 mb-4">
                 <Carousel>
-                    {ReccomendedItems.map((item, key) => (
-                        <Carousel.Item interval={3000} onClick={() => console.log(item.FoodID)} key={key}>
+                    {popularItems.map((item, key) => (
+                        <Carousel.Item interval={3000} onClick={() => console.log(item.recipe_id)} key={key}>
                             <Container fluid className="p-0" style={{ height: '40vh' }}>
-                                <img src={item.FoodImage}
-                                    className="d-block w-100 h-100"
+                                <img src={item.recipe_image ? item.recipe_image : '../src/Images/Burger.jpg'}
+                                     className="d-block w-100 h-100"
                                     style={{ objectFit: 'cover' }} />
                             </Container>
                             <Carousel.Caption>
-                                <h3>{item.FoodName}</h3>
-                                <p>{item.FoodDescription}</p>
+                                <h3>{item.recipe_name}</h3>
+                                <p>{item.recipe_description}</p>
                             </Carousel.Caption>
                         </Carousel.Item>
                     ))}
@@ -90,17 +125,33 @@ export default function RecipesPage() {
             </Container>
 
             <Container fluid className="text-center mb-4">
-                <Col>
-                    <p className="fw-semibold fs-3 m-0">You Might Like</p>
-                </Col>
+                {recipeList? (
+                    <Col>
+                        <p className="fw-semibold fs-3 m-0">You Might Like</p>
+                    </Col>
+                ) : null}
+
             </Container>
             <Container fluid>
                 <Row>
-                    {YouMightLikeItems.map((item, key) => (
-                        <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
-                            <YouMightLikeCard FoodCookTime={item.FoodCookTime} FoodDescription={item.FoodDescription} FoodID={item.FoodID} FoodName={item.FoodName} ImageLink={item.ImageLink} key={key} />
+                    {!recipeList ? (
+                        <Col className="text-center" style={{marginTop: "20px", marginBottom: "20px"}}>
+                            <h3>No Recipes Available</h3>
+                            <p>Please try again later or check your search criteria.</p>
                         </Col>
-                    ))}
+                    ) : (
+                        recipeList.map((item, key) => (
+                            <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5" key={key}>
+                                <YouMightLikeCard
+                                    FoodCookTime={item.cook_time}
+                                    FoodDescription={item.recipe_description ? item.recipe_description : "Start your day with this delightful meal"}
+                                    FoodID={item.recipe_id}
+                                    FoodName={item.recipe_name}
+                                    ImageLink={item.recipe_image ? item.recipe_image : '../src/Images/Burger.jpg'}
+                                />
+                            </Col>
+                        ))
+                    )}
                 </Row>
             </Container>
             <Footer />
