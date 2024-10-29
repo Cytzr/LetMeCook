@@ -5,7 +5,7 @@ import { FaClock } from "react-icons/fa";
 const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName, FoodCookTime, FoodDescription, FoodID }) => {
     return (
         <>
-            <Card className="shadow-sm" style={{ maxWidth: "300px" }} onClick={() => console.log(FoodID)}>
+            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={() => console.log(FoodID)}>
                 <Card.Img
                     src={ImageLink}
                     alt={FoodName}
@@ -13,14 +13,14 @@ const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName
                     style={{ height: "13vw" }}
                 />
                 <Card.Body style={{ position: "relative" }}>
-                    <Card.Title className="m-0 p-0 rounded" style={{ position: "absolute", top: "-10%", left: "20%", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
+                    <Card.Title className="m-0 p-0 rounded" style={{ position: "absolute", top: "-10%", left: "10%",right: "10%", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
                         <Col className="rounded text-center fw-bold fs-4 p-2" style={{
                             backgroundColor: "white",
                         }}>{FoodName}</Col>
                     </Card.Title>
                     <Card.Body style={{}}>
                         <Card.Text>
-                            <div className="text-muted fw-semibold" style={{ textAlign: "justify" }}>{FoodDescription}</div>
+                            <div className="text-muted fw-semibold" style={{ textAlign: "justify" , height:"60px", marginTop: "10px"}}>{FoodDescription}</div>
                         </Card.Text>
                     </Card.Body>
                     <Col className="d-flex justify-content-between align-items-center mt-2">
