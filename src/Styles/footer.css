@@ -1,24 +1,26 @@
-.footer{
-    padding: 2rem;
-    color: white;
-}
-
-.footer img{
-    width: 14rem;
-    height: 10rem;
-} 
-
-.footer p{
-    font-weight: 200;
-    font-size: 0.75rem;
-}
-
 .footer a{
     text-decoration: none;
     color: white;
-    transition: 0.3s;
 }
 
-.footer .col-md-3 .row-6 h5{
-    margin-bottom: 1rem;
+.footer a:hover{
+    text-decoration: underline;
+}
+
+.footer{
+    overflow-y: hidden;
+}
+
+.container{
+    max-width: 100%;
+    background-color: #2d2d2d;
+}
+
+.footer img{
+    width: 70%;
+    height: auto;
+}
+
+.footer p{
+    font-weight: 300;
 }
