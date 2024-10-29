@@ -6,7 +6,7 @@ function Footer() {
         <Container className='fluid p-5 footer'>
             <Row className='text-white'>
                 <Col className=''>
-                    <im g src="..\src\Images\AppIcon.png" alt="LetMeCook" className="img-fluid" />
+                    <img src="..\src\Images\AppIcon.png" alt="LetMeCook" className="img-fluid" />
                 </Col>
                 <Col>
                     <Row>
