@@ -1,11 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import '../Styles/login-signup.css'
-import { Container, FloatingLabel, Row, Col, Button } from 'react-bootstrap';
+import '../Styles/home.css'
+import { Container, FloatingLabel, Col, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 function Login() {
-
-    const navigate = useNavigate();
 
     return (
         <body className='budi d-flex justify-content-center'>
