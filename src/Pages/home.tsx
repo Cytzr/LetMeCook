@@ -13,7 +13,7 @@
                             <div className="col-6 text-white">
                                 <h1 className='fw-bold'>LetMeCook</h1>
                                 <h3>Cook Smart, Eat Well, Delicious Recipes with Nutrition at Your Fingertips!</h3>
-                                <a href="#mainPage"><Button className='border-white btn'>Start Now</Button></a>
+                                <a href="#mainPage"><Button className='border-white btn-dark'>Start Now</Button></a>
                             </div>
                             <div className="col-6"></div>
                         </Col>
@@ -40,8 +40,8 @@
                                         <p>Fresh, Flavorful, Fit - Your Guide to Healthy Deliciousness!</p>
                                     </Row>
                                     <Col className='d-flex'>
-                                        <a href=""><Button className='border-white border-radius-3 btn btn-spacing'>BMI Calculator</Button></a>
-                                        <a href=""><Button className='border-white border-radius-3 btn'>Create Recipes</Button>  </a>
+                                        <a href=""><Button className='border-white border-radius-3 btn-dark btn-spacing'>BMI Calculator</Button></a>
+                                        <a href=""><Button className='border-white border-radius-3 btn-dark'>Create Recipes</Button>  </a>
                                     </Col>  
                                 </Row>
                             </div>

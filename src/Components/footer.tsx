@@ -3,8 +3,8 @@ import '../Styles/footer.css'
 
 function Footer() {
     return (
-        <Container className='fluid p-5'>
-            <Row className='text-white footer'>
+        <Container className='fluid p-5 footer'>
+            <Row className='text-white'>
                 <Col className=''>
                     <img src="..\src\Images\AppIcon.png" alt="LetMeCook" className="img-fluid" />
                 </Col>
