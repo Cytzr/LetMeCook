@@ -7,6 +7,7 @@ export default interface IngredientsCardProps {
     TotalCalorie: number,
     ImageLink: string,
     NutritionAmount: number,
+    IngredientAmount: number,
     onAmountChange: (Data: IngredientProps, Action: string) => void;
 }
 

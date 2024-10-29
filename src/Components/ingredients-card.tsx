@@ -1,41 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import IngredientsCardProps from "../Interfaces/ingredients-card-props";
 
 const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardProps) => {
     const [Amount, setAmount] = useState(0);
 
-    const handleAmount = (PrevAmount: number, Amount: number, Data: IngredientsCardProps) => {
-        if (PrevAmount > Amount) {
+    // Update the local state whenever the Data.Amount changes from props
+    useEffect(() => {
+        setAmount(Data.IngredientAmount);
+    }, [Data.IngredientAmount]);
+
+    const handleAmount = (PrevAmount: number, newAmount: number) => {
+        if (PrevAmount > newAmount) {
             Data.onAmountChange({
                 IngredientID: Data.IngredientID,
                 ImageLink: Data.ImageLink,
-                IngredientAmount: Amount,
+                IngredientAmount: newAmount,
                 IngredientDescription: Data.IngredientDescription,
                 IngredientName: Data.IngredientName,
-                // IngredientWeightPerPorsion: Data.IngredientWeightPerPorsion,
                 NutrientsContained: Data.NutrientsContained,
                 TotalCalorie: Data.TotalCalorie,
             }, "Reduce");
-        }
-        else if (PrevAmount < Amount) {
+        } else if (PrevAmount < newAmount) {
             Data.onAmountChange({
                 IngredientID: Data.IngredientID,
                 ImageLink: Data.ImageLink,
-                IngredientAmount: Amount,
+                IngredientAmount: newAmount,
                 IngredientDescription: Data.IngredientDescription,
                 IngredientName: Data.IngredientName,
-                // IngredientWeightPerPorsion: Data.IngredientWeightPerPorsion,
                 NutrientsContained: Data.NutrientsContained,
                 TotalCalorie: Data.TotalCalorie,
             }, "Add");
         }
-        setAmount(Amount);
+        setAmount(newAmount);
+    };
 
-    }
-
-    return <>
-        <Card className="shadow-sm" style={{ width: "300px", height:"400px" }}>
+    return (
+        <Card className="shadow-sm" style={{ width: "300px", height: "400px" }}>
             <Card.Img
                 src={Data.ImageLink}
                 alt={Data.IngredientName}
@@ -45,13 +46,14 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
             <Card.Body>
                 <Card.Title>
                     <Row>
-                        <Col style={{width: "300px", fontSize:"19px"}}>{Data.IngredientName}</Col>
-
+                        <Col style={{ width: "300px", fontSize: "19px" }}>{Data.IngredientName}</Col>
                         <Col>
-                            <div className="fw-bold" style={{ fontSize: "1.5vh", justifyContent: "center", textAlign: "end", alignContent: "center", paddingRight: "0px" }}>{Data.TotalCalorie} Cal</div>
+                            <div className="fw-bold" style={{ fontSize: "1.5vh", justifyContent: "center", textAlign: "end", alignContent: "center", paddingRight: "0px" }}>
+                                {Data.TotalCalorie} Cal
+                            </div>
                         </Col>
                     </Row>
-                    <Col style={{width: "300px", fontSize:"13px"}}>{Data.NutrientsContained} : {Data.NutritionAmount}g per 10g</Col>
+                    <Col style={{ width: "300px", fontSize: "13px" }}>{Data.NutrientsContained} : {Data.NutritionAmount}g per 10g</Col>
                 </Card.Title>
                 <Card.Body style={{ padding: "0px" }}>
                     <Card.Text>
@@ -59,13 +61,17 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
                     </Card.Text>
                 </Card.Body>
                 <Col className="d-flex justify-content-between align-items-center mt-2">
-                    <Col><button className="btn btn-dark rounded-pill" style={{ fontSize: "1vw" }} onClick={() => Amount != 0 ? handleAmount(Amount, Amount - 10, Data) : handleAmount(Amount, 0, Data)}>Remove</button></Col>
+                    <Col>
+                        <button className="btn btn-dark rounded-pill" style={{ fontSize: "1vw" }} onClick={() => handleAmount(Amount, Math.max(0, Amount - 10))}>Remove</button>
+                    </Col>
                     <Col className="text-center">{Amount}g</Col>
-                    <Col><button className="btn btn-dark rounded-pill px-4" style={{ fontSize: "1vw" }} onClick={() => handleAmount(Amount, Amount + 10, Data)}>Add</button></Col>
+                    <Col>
+                        <button className="btn btn-dark rounded-pill px-4" style={{ fontSize: "1vw" }} onClick={() => handleAmount(Amount, Amount + 10)}>Add</button>
+                    </Col>
                 </Col>
             </Card.Body>
         </Card>
-    </>
+    );
 }
 
 export default IngredientsCard;

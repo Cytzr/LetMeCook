@@ -65,7 +65,7 @@ function IngredientsPage() {
                 // Update the amount of an existing ingredient
                 const updatedCart = [...prevCart];
                 const existingItem = updatedCart[existingItemIndex];
-                const newAmount = Action === "Add" ? existingItem.IngredientAmount + 1 : Math.max(existingItem.IngredientAmount - 1, 0);
+                const newAmount = Action === "Add" ? existingItem.IngredientAmount + 10 : Math.max(existingItem.IngredientAmount - 10, 0);
 
                 // Update the ingredient with the new amount
                 if (newAmount > 0) {
@@ -80,13 +80,12 @@ function IngredientsPage() {
                 }
             } else if (Action === "Add") {
                 // Add the ingredient to the cart if it doesn't already exist and action is "Add"
-                return [...prevCart, { ...Ingredient, IngredientAmount: 1 }];
+                return [...prevCart, { ...Ingredient, IngredientAmount: 10 }];
             } else {
                 // If action is "Reduce" and the item doesn't exist, do nothing
                 return prevCart;
             }
         });
-        console.log(Cart)
     };
     const getIngredientList = async (categoryId: number) => {
         try {
@@ -109,6 +108,10 @@ function IngredientsPage() {
             console.error("Error fetching recommended items:", error);
         }
     };
+
+    const postRecipe = () => {
+        console.log(Cart);
+    }
 
     useEffect(() => {
         getIngredientList(7);
@@ -136,25 +139,31 @@ function IngredientsPage() {
                 </Container>
                 <Container fluid>
                     <Row>
-                        {ingredientList ? (
-                            ingredientList.map((data, key) => (
-                                <Col key={key} md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
-                                    <IngredientsCard
-                                        IngredientID={data.ingredient_id}
-                                        ImageLink={data.ingredient_image}
-                                        IngredientDescription={data.ingredient_description ? data.ingredient_description : "Ingredient Rich Of Nutrition, Good for health and fitness"}
-                                        IngredientName={data.ingredient_name}
-                                        NutrientsContained={data.category_name}
-                                        NutritionAmount={data.amount}
-                                        TotalCalorie={data.calories}
-                                        onAmountChange={cartChange}
-                                    />
-                                </Col>
-                            ))
-                        ) :
-                            <h3 style={{marginBottom:"300px", marginTop:"200px", alignContent:"center", textAlign:"center"}}>No Ingredients Available Yet</h3>
-                        }
+                        {ingredientList.length > 0 ? (
+                            ingredientList.map((data) => {
+                                // Find the amount from the cart based on ingredient_id
+                                const ingredientInCart = Cart.find(item => item.IngredientID === data.ingredient_id);
+                                const amount = ingredientInCart ? ingredientInCart.IngredientAmount : 0; // Default to 0 if not in cart
 
+                                return (
+                                    <Col key={data.ingredient_id} md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
+                                        <IngredientsCard
+                                            IngredientID={data.ingredient_id}
+                                            ImageLink={data.ingredient_image}
+                                            IngredientDescription={data.ingredient_description || "Ingredient Rich Of Nutrition, Good for health and fitness"}
+                                            IngredientName={data.ingredient_name}
+                                            NutrientsContained={data.category_name}
+                                            NutritionAmount={data.amount}
+                                            TotalCalorie={data.calories}
+                                            onAmountChange={cartChange}
+                                            IngredientAmount={amount} // Pass the amount here
+                                        />
+                                    </Col>
+                                );
+                            })
+                        ) : (
+                            <h3 style={{ marginBottom: "300px", marginTop: "200px", textAlign: "center" }}>No Ingredients Available Yet</h3>
+                        )}
                     </Row>
                 </Container>
                 <Footer />
@@ -190,7 +199,7 @@ function IngredientsPage() {
                             <Col className="d-flex align-items-center justify-content-end">
                                 <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
                                 <div style={{ width: "1vw" }}></div>
-                                <button type="button" className="btn btn-secondary rounded-pill px-4">Post Recipe</button>
+                                <button type="button" className="btn btn-secondary rounded-pill px-4" onClick={postRecipe}>Post Recipe</button>
                             </Col>
                         </Row>
                     </Col>
