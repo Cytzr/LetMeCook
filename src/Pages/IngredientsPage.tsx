@@ -139,7 +139,7 @@ function IngredientsPage() {
                 </Container>
                 <Container fluid>
                     <Row>
-                        {ingredientList.length > 0 ? (
+                        {ingredientList ? (
                             ingredientList.map((data) => {
                                 // Find the amount from the cart based on ingredient_id
                                 const ingredientInCart = Cart.find(item => item.IngredientID === data.ingredient_id);
