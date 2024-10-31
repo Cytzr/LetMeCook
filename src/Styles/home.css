@@ -1,0 +1,51 @@
+.bg-1{
+    background-image: url('../Images/bg-1-home.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%; /* Memenuhi lebar viewport */
+    min-height: 100vh; /* Memenuhi tinggi viewport */
+}
+
+.bg-2{
+    background-image: url('../Images/bg-2-home.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.bg-3{
+    background-image: url('../Images/bg-3-home.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100%;
+    border-radius: 15px;
+}
+
+.btn-dark{
+    border-radius: 15px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    transition: 0.2s;
+    background-color: #2D2D2D;
+}
+
+.btn-spacing{
+    margin-right: 1rem;
+}
+
+.btn:hover{
+    background-color: rgb(28, 28, 28) ;
+}
+
+.font-large{
+    font-size: 1.5rem;
+}
+
+h1 .color-dark{
+    color: #2D2D2D;
+}
