@@ -9,6 +9,7 @@ import RecipesPage from './Pages/RecipesPage.tsx'
 import Login from './Pages/login.tsx'
 import Register from './Pages/register.tsx'
 import Home from './Pages/home.tsx'
+import CreateRecipe from './Pages/CreateRecipe.tsx'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     element: <IngredientsPage />
   },
   {
+    path: "/create-recipe",
+    element: <CreateRecipe />
+  },
+  {
     path: "/experts",
     element: <App />
   },
@@ -41,11 +46,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register/>
+    element: <Register />
   },
   {
     path: "/home",
-    element: <Home/>
+    element: <Home />
   }
 ])
 
