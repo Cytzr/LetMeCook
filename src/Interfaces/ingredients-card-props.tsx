@@ -1,4 +1,4 @@
-export default interface IngredientsCardProps {
+export interface IngredientsCardProps {
     IngredientID: string,
     IngredientName: string,
     IngredientWeightPerPorsion: number,
