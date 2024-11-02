@@ -1,0 +1,24 @@
+.footer{
+    padding: 2rem;
+    color: white;
+}
+
+.footer img{
+    width: 14rem;
+    height: 10rem;
+} 
+
+.footer p{
+    font-weight: 200;
+    font-size: 0.75rem;
+}
+
+.footer a{
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.footer .col-md-3 .row-6 h5{
+    margin-bottom: 1rem;
+}
