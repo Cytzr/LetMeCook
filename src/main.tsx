@@ -14,7 +14,7 @@ import CreateRecipe from './Pages/CreateRecipe.tsx'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: <Home />
   },
   {
     path: "/example",
@@ -47,10 +47,6 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
-  },
-  {
-    path: "/home",
-    element: <Home />
   }
 ])
 

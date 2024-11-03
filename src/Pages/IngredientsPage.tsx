@@ -1,12 +1,13 @@
 import Footer from "../Components/footer";
 import { Col, Container, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
-import {ReactNode, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import IngredientsCard from "../Components/ingredients-card";
 import { IngredientProps } from "../Interfaces/ingredients-card-props";
 import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface CategoryInterface {
     category_id: number;
@@ -18,6 +19,7 @@ interface IngredientInterface  {
     ingredient_name: string,
     ingredient_image: string,
     amount_per_unit: string,
+    nutrition_contained: [],
     category_name: string,
     category_id: number,
     nutrition_per_unit: string,
@@ -25,14 +27,6 @@ interface IngredientInterface  {
     ingredient_description: string,
     amount: number
 };
-
-function CalculateCalories(Array: IngredientProps[]): number {
-    let totalCalorie = 0;
-    for (let index = 0; index < Array.length; index++) {
-        // totalCalorie += (Array[index].IngredientAmount * Array[index].IngredientWeightPerPorsion)
-    }
-    return totalCalorie;
-}
 
 function FindUniqueNutrients(Array: IngredientProps[]): string[] {
     const Nutrient: string[] = [];
@@ -48,6 +42,7 @@ function FindUniqueNutrients(Array: IngredientProps[]): string[] {
 }
 
 function IngredientsPage() {
+    const navigate = useNavigate();
     const [Selected, setSelected] = useState(7);
     const [ingredientList, setIngredientList] = useState<IngredientInterface[]>([]);
     const [categoryList, setCategoryList] = useState<CategoryInterface[]>([]);
@@ -57,6 +52,20 @@ function IngredientsPage() {
 
         getIngredientList(category_id);
     }
+    const calculateCalories = (ingredients: IngredientProps[]) => {
+        let totalCalorie = 0;
+
+        for (let i = 0; i < ingredients.length; i++) {
+            const ingredient = ingredients[i];
+
+            // Calculate the calorie for each ingredient and add it to totalCalorie
+            console.log(ingredient);
+            totalCalorie += (ingredient.IngredientAmount * ingredient.TotalCalorie);
+        }
+
+        return totalCalorie;
+    };
+
     const cartChange = (Ingredient: IngredientProps, Action: string) => {
         setCart((prevCart) => {
             const existingItemIndex = prevCart.findIndex((item) => item.IngredientID === Ingredient.IngredientID);
@@ -110,7 +119,8 @@ function IngredientsPage() {
     };
 
     const postRecipe = () => {
-        console.log(Cart);
+        localStorage.setItem('ingredients', JSON.stringify(Cart));
+        navigate('/create-recipe');
     }
 
     useEffect(() => {
@@ -152,7 +162,8 @@ function IngredientsPage() {
                                             ImageLink={data.ingredient_image}
                                             IngredientDescription={data.ingredient_description || "Ingredient Rich Of Nutrition, Good for health and fitness"}
                                             IngredientName={data.ingredient_name}
-                                            NutrientsContained={data.category_name}
+                                            Nutrient={data.category_name}
+                                            NutrientsContained={data.nutrition_contained}
                                             NutritionAmount={data.amount}
                                             TotalCalorie={data.calories}
                                             onAmountChange={cartChange}
@@ -188,7 +199,7 @@ function IngredientsPage() {
                             <Col className="d-flex align-items-center justify-content-start">
                                 <MdFastfood />
                                 <div style={{ width: "0.5vw" }}></div>
-                                Calories: {CalculateCalories(Cart)} Cal
+                                Calories: {calculateCalories(Cart)} Cal
                                 <div style={{ width: "0.25vw" }}></div>
                                 <GoTriangleDown onClick={() => { }} />
                             </Col>

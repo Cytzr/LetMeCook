@@ -17,6 +17,7 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
                 ImageLink: Data.ImageLink,
                 IngredientAmount: newAmount,
                 IngredientDescription: Data.IngredientDescription,
+                Nutrient: Data.Nutrient,
                 IngredientName: Data.IngredientName,
                 NutrientsContained: Data.NutrientsContained,
                 TotalCalorie: Data.TotalCalorie,
@@ -26,6 +27,7 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
                 IngredientID: Data.IngredientID,
                 ImageLink: Data.ImageLink,
                 IngredientAmount: newAmount,
+                Nutrient: Data.Nutrient,
                 IngredientDescription: Data.IngredientDescription,
                 IngredientName: Data.IngredientName,
                 NutrientsContained: Data.NutrientsContained,
@@ -53,7 +55,7 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
                             </div>
                         </Col>
                     </Row>
-                    <Col style={{ width: "300px", fontSize: "13px" }}>{Data.NutrientsContained} : {Data.NutritionAmount}g per 10g</Col>
+                    <Col style={{ width: "300px", fontSize: "13px" }}>{Data.Nutrient} : {Data.NutritionAmount}g per 10g</Col>
                 </Card.Title>
                 <Card.Body style={{ padding: "0px" }}>
                     <Card.Text>
