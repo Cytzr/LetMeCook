@@ -1,7 +1,7 @@
 interface DoctorCardProps {
-    DoctorName: string,
-    ImageLink: string,
-    DoctorTitle: string,
+  DoctorName: string;
+  ImageLink: string;
+  DoctorTitle: string;
 }
 
-export default DoctorCardProps
+export default DoctorCardProps;
