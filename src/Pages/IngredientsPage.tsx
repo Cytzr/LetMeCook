@@ -130,7 +130,7 @@ function IngredientsPage() {
 
     return (
         <>
-            <Container fluid className="position-relative">
+            <Container fluid className="position-relative" style={{ padding: "0" }}>
                 <CustomNavbar />
                 <Container fluid className="text-center">
                     <p onClick={() => setSelected(0)} className="fw-semibold fs-3">Pick Your Ingredients</p>
