@@ -46,7 +46,6 @@ function Login() {
 
         } else {
             Swal.close();
-            console.log(response.data.data);
             localStorage.setItem('login_data', JSON.stringify(response.data.data))
             navigate('/');
         }

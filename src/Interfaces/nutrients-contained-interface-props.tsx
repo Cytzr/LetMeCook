@@ -1,4 +1,6 @@
 export default interface NutrientsContainedProps {
-    name: string,
+
+    category_name: string,
     amount: number,
+    category_id: number,
 }

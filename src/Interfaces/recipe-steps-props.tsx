@@ -5,6 +5,7 @@ export interface RecipesStepsPropsWithIndex {
 }
 
 export interface RecipesStepsProps {
-    stepName: string,
-    stepDescription: string,
+    step_number: number,
+    step_name: string,
+    description: string,
 }

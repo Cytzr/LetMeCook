@@ -32,9 +32,9 @@ function FindUniqueNutrients(Array: IngredientProps[]): string[] {
     const Nutrient: string[] = [];
 
     for (let index = 0; index < Array.length; index++) {
-        for (let index2 = 0; index < Array[index].NutrientsContained.length; index2++) {
-            if (!Nutrient.find((item) => item === Array[index].NutrientsContained[index2])) {
-                Nutrient.push(Array[index].NutrientsContained[index2]);
+        for (let index2 = 0; index < Array[index].nutrition_contains.length; index2++) {
+            if (!Nutrient.find((item) => item === Array[index].nutrition_contains[index2])) {
+                Nutrient.push(Array[index].nutrition_contains[index2]);
             }
         }
     }
@@ -60,7 +60,7 @@ function IngredientsPage() {
 
             // Calculate the calorie for each ingredient and add it to totalCalorie
             console.log(ingredient);
-            totalCalorie += (ingredient.IngredientAmount * ingredient.TotalCalorie);
+            totalCalorie += (ingredient.amount * ingredient.calories);
         }
 
         return totalCalorie;
@@ -68,24 +68,24 @@ function IngredientsPage() {
 
     const cartChange = (Ingredient: IngredientProps, Action: string) => {
         setCart((prevCart) => {
-            const existingItemIndex = prevCart.findIndex((item) => item.IngredientID === Ingredient.IngredientID);
+            const existingItemIndex = prevCart.findIndex((item) => item.ingredient_id === Ingredient.ingredient_id);
 
             if (existingItemIndex >= 0) {
                 // Update the amount of an existing ingredient
                 const updatedCart = [...prevCart];
                 const existingItem = updatedCart[existingItemIndex];
-                const newAmount = Action === "Add" ? existingItem.IngredientAmount + 10 : Math.max(existingItem.IngredientAmount - 10, 0);
+                const newAmount = Action === "Add" ? existingItem.amount + 10 : Math.max(existingItem.amount - 10, 0);
 
                 // Update the ingredient with the new amount
                 if (newAmount > 0) {
                     updatedCart[existingItemIndex] = {
                         ...existingItem,
-                        IngredientAmount: newAmount,
+                        amount: newAmount,
                     };
                     return updatedCart;
                 } else {
                     // Remove the ingredient if the amount reaches 0
-                    return updatedCart.filter((item) => item.IngredientID !== Ingredient.IngredientID);
+                    return updatedCart.filter((item) => item.ingredient_id !== Ingredient.ingredient_id);
                 }
             } else if (Action === "Add") {
                 // Add the ingredient to the cart if it doesn't already exist and action is "Add"
@@ -152,8 +152,8 @@ function IngredientsPage() {
                         {ingredientList ? (
                             ingredientList.map((data) => {
                                 // Find the amount from the cart based on ingredient_id
-                                const ingredientInCart = Cart.find(item => item.IngredientID === data.ingredient_id);
-                                const amount = ingredientInCart ? ingredientInCart.IngredientAmount : 0; // Default to 0 if not in cart
+                                const ingredientInCart = Cart.find(item => item.ingredient_id === data.ingredient_id);
+                                const amount = ingredientInCart ? ingredientInCart.amount : 0; // Default to 0 if not in cart
 
                                 return (
                                     <Col key={data.ingredient_id} md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
