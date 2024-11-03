@@ -57,6 +57,7 @@ function IngredientsPage() {
                             <IngredientsCard ImageLink={data.ImageLink} IngredientDescription={data.IngredientDescription} IngredientName={data.IngredientName} IngredientWeightPerPorsion={data.IngredientWeightPerPorsion} NutrientsContained={data.NutrientsContained} TotalCalorie={data.TotalCalorie} key={key} />
                         </Col>
                     ))}
+                    
                 </Row>
             </Container>
             {/* <Footer /> */}
