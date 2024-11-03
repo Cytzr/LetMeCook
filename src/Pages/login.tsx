@@ -3,6 +3,7 @@ import {useState} from "react";
 import '../Styles/login-signup.css'
 import { Container, FloatingLabel, Col, Button} from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import '../Styles/home.css'
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -52,6 +53,7 @@ function Login() {
 
 
     }
+
     return (
         <body className='budi d-flex justify-content-center'>
                 <Container className='bg-white m-5 p-0'>
