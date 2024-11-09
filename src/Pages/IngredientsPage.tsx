@@ -119,6 +119,11 @@ function IngredientsPage() {
     };
 
     const postRecipe = () => {
+        const ingredient = localStorage.getItem('ingredients');
+        const ingredientData = ingredient ? JSON.parse(ingredient) : null;
+        if (ingredientData) {
+            localStorage.removeItem('ingredients');
+        }
         localStorage.setItem('ingredients', JSON.stringify(Cart));
         navigate('/create-recipe');
     }
