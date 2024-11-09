@@ -8,7 +8,7 @@ import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
 import { useNavigate } from 'react-router-dom'; 
 import axios from "axios";
-// import {useNavigate} from "react-router-dom";
+
 
 interface CategoryInterface {
     category_id: number;
