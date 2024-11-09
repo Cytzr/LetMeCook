@@ -10,6 +10,8 @@ import Login from './Pages/login.tsx'
 import Register from './Pages/register.tsx'
 import Home from './Pages/home.tsx'
 import CreateRecipe from './Pages/CreateRecipe.tsx'
+import LikedRecipe from './Pages/likedRecipe.tsx'
+import MyRecipe from './Pages/myRecipe.tsx'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />
+  },
+  {
+    path: "/user-id/saved-menu",
+    element: <LikedRecipe />
+  },
+  {
+    path: "/myRecipe", 
+    element: <MyRecipe/>
   }
 ])
 

@@ -7,6 +7,7 @@ import IngredientsCard from "../Components/ingredients-card";
 import { IngredientProps } from "../Interfaces/ingredients-card-props";
 import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
+import { useNavigate } from 'react-router-dom'; 
 
 const IngredientItems: IngredientButtonProps[] = [
     { Label: "Protein", LinkIcon: "../src/Images/protein-icon.png", ItemNumber: 1 },
@@ -53,6 +54,8 @@ function FindUniqueNutrients(Array: IngredientProps[]): string[] {
 }
 
 function IngredientsPage() {
+    const navigate = useNavigate();
+
     const [Selected, setSelected] = useState(0);
 
     const [Cart, setCart] = useState<IngredientProps[]>([]);
@@ -158,7 +161,7 @@ function IngredientsPage() {
                             <Col className="d-flex align-items-center justify-content-end">
                                 <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
                                 <div style={{ width: "1vw" }}></div>
-                                <button type="button" className="btn btn-secondary rounded-pill px-4">Post Recipe</button>
+                                <button type="button" className="btn btn-secondary rounded-pill px-4" onClick={() => navigate('/MyRecipe')}>Post Recipe</button>
                             </Col>
                         </Row>
                     </Col>
