@@ -9,6 +9,7 @@ import RecipeSteps from "../Components/recipe-steps";
 import { RecipesStepsProps } from "../Interfaces/recipe-steps-props";
 import NutrientsContainedProps from "../Interfaces/nutrients-contained-interface-props";
 import {useNavigate } from 'react-router-dom';
+import AuthenticationCheck from "../Components/authentication-check.tsx";
 
 function CreateRecipe() {
     const navigate = useNavigate();
@@ -30,11 +31,36 @@ function CreateRecipe() {
             reader.onload = () => resolve(reader.result as string);
         });
     };
-
+    const checkFile = async (file) => {
+        if (file == null) {
+            Swal.fire({
+                title: 'Invalid File Type',
+                text: 'Please select a PNG or JPG image.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return false;
+        }
+        const fileType = file.type;
+        if (fileType !== 'image/png' && fileType !== 'image/jpg' && fileType !== 'image/jpeg') {
+            Swal.fire({
+                title: 'Invalid File Type',
+                text: 'Please select a PNG or JPG image.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return false;
+        }
+        return true;
+    }
     const handleImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files;
         if (selectedFiles && selectedFiles.length > 0) {
             const file = selectedFiles[0];
+            const isValidFile = await checkFile(file);
+            if (!isValidFile) {
+                return;
+            }
             setImage(file);
             try {
                 const imgUrl = await fileToDataString(file);
@@ -66,6 +92,22 @@ function CreateRecipe() {
     };
 
     const createRecipe = async () => {
+        AuthenticationCheck(navigate,'/create-recipe');
+        console.log(image);
+
+        if (!nutritionsData || !recipeSteps || !ingredientData || !recipeName || !loginData.user_id || !recipeDescription || !cookTime || !calories) {
+            await Swal.fire({
+                title: 'Incomplete Data',
+                text: 'Please complete all fields before submitting.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
+        const isValidFile = await checkFile(image);
+        if (!isValidFile) {
+            return;
+        }
         const formData = new FormData();
         const filteredNutritionData = nutritionsData.filter(nutrient => nutrient.category_name !== "Calories");
 
@@ -80,12 +122,12 @@ function CreateRecipe() {
         formData.append('calories', calories)
 
         try {
+            Swal.showLoading();
             const response = await axios.post('http://localhost:8000/api/recipe/create', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
             if (response.data.error == 1) {
                 Swal.fire({
                     title: 'Failed',

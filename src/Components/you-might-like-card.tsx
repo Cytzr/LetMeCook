@@ -8,7 +8,7 @@ const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName
 const navigate = useNavigate();
 const saveRecipe = async () => {
     console.log('tes');
-   const check =  AuthenticationCheck(navigate);
+   const check =  AuthenticationCheck(navigate, '/recipes');
    console.log(check);
     return;
 }

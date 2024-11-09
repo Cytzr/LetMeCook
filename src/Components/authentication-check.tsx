@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-function AuthenticationCheck(navigate) {
+function AuthenticationCheck(navigate, page) {
     const loginDataString = localStorage.getItem('login_data');
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
 
@@ -15,6 +15,10 @@ function AuthenticationCheck(navigate) {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.close();
+                const data = {
+                    page
+                }
+                localStorage.setItem('redirect', JSON.stringify(data));
                 navigate('../login');
             } else if (result.isDismissed) {
                 Swal.close();
