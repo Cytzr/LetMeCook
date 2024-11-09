@@ -1,12 +1,21 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../Styles/navbar-style.css'
 import { Dropdown } from 'react-bootstrap';
 
 function CustomNavbar() {
     const location = useLocation();
-
+    const loginDataString = localStorage.getItem('login_data');
+    const loginData = loginDataString ? JSON.parse(loginDataString) : null;
+    const navigate = useNavigate();
     const isActive = (path: string) => location.pathname === path;
-
+    console.log(loginData);
+    const toLoginPage = () => {
+        navigate('/login');
+    };
+    const logout = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
     return (
         <div className="container-fluid main-container">
             <div className="row d-flex justify-content-between align-items-center text-center p-10">
@@ -35,31 +44,34 @@ function CustomNavbar() {
                     <div className="row dp-flex align-items-center">
                         <div className="col"></div>
 
-                        {/* conditional rendering based on local storage not available */}
-                        {/* <div className="col-10 d-flex align-items-center justify-content-end mr-1">Sign in</div>
-                        <div className="col-1"></div> */}
+                        {!loginData && (<div>
+                            <div className="col-10 d-flex align-items-center justify-content-end mr-1 cursor-pointer" onClick={toLoginPage}>
+                              Sign in
+                            </div>
+                            <div className="col-1"></div>
+                        </div>)}
 
-                        {/* conditional rendering based on local storage available */}
-                        <div className="col">
-                            <a href="/premium">
-                                <button className='premium-button'>
-                                    <div className="premium-text">Premium</div>
-                                </button>
-                            </a>
-                        </div>
-                        <div className="col d-flex flex-row align-items-center justify-content-end">
-                            <Dropdown>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    Username
-                                </Dropdown.Toggle>
+                        {loginData && (<div className='d-flex align-items-center justify-content-between'>
+                            <div className="col">
+                                <a href="/premium">
+                                    <button className='premium-button'>
+                                        <div className="premium-text">Premium</div>
+                                    </button>
+                                </a>
+                            </div>
+                            <div className="col d-flex flex-row align-items-center justify-content-end">
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                        {loginData['username']}
+                                    </Dropdown.Toggle>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="/user-id/saved-menu">Saved Menu</Dropdown.Item>
-                                    <Dropdown.Item href="#">Logout</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
-
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item href="/user-id/saved-menu">Saved Menu</Dropdown.Item>
+                                        <Dropdown.Item href="#" onClick={logout}>Logout</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
+                        </div>)}
                     </div>
                 </div>
             </div>
