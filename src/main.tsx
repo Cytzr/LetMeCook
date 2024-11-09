@@ -10,11 +10,11 @@ import Login from './Pages/login.tsx'
 import Register from './Pages/register.tsx'
 import Home from './Pages/home.tsx'
 import CreateRecipe from './Pages/CreateRecipe.tsx'
-
+import OurExpertPage from "./Pages/OurExpertPage.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: <Home />
   },
   {
     path: "/example",
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/recipes",
-    element: <RecipesPage />
+    element: <RecipesPage />,
   },
   {
     path: "/ingredients",
@@ -34,25 +34,21 @@ const router = createBrowserRouter([
   },
   {
     path: "/experts",
-    element: <App />
+    element: <OurExpertPage />,
   },
   {
     path: "/about-us",
-    element: <App />
+    element: <App />,
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
-  {
-    path: "/home",
-    element: <Home />
-  }
-])
+]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

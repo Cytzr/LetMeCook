@@ -10,7 +10,7 @@ function Footer() {
                 </Col>
                 <Col>
                     <Row>
-                        <h5 className='mb-4'>Articles</h5> 
+                        <h5 className='mb-4'>Articles</h5>
                         <Col>
                             <a href=""><p>How Can You Improve Your Nutrition Daily?</p></a>
                             <a href=""><p>What Is the Best Way to Stay Hydrated?</p></a>
@@ -20,17 +20,17 @@ function Footer() {
                 </Col>
                 <Col className='ms-4'>
                     <Row>
-                        <h5 className='mb-4'>Latest Book</h5> 
+                        <h5 className='mb-4'>Latest Book</h5>
                         <a href=""><p>Fuel Your Body</p></a>
                         <a href=""><p>The Science of Eating Well</p></a>
                         <a href=""><p>Wholesome Nutrition</p></a>
                     </Row>
                 </Col>
                 <Col>
-                    <h5 className='mb-4'>Our Mission</h5> 
+                    <h5 className='mb-4'>Our Mission</h5>
                     <p>We are committed to delivering essential nutrition insights and personalized health advice tailored to your unique needs.</p>
                 </Col>
-            </Row> 
+            </Row>
         </Container>
     )
 }

@@ -1,43 +1,32 @@
 import Footer from "../Components/footer";
 import { Col, Container, Row } from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
-import { ReactNode, useState } from "react";
-import IngredientButtonProps from "../Interfaces/ingredients-button-props";
+import {useEffect, useState} from "react";
 import IngredientsCard from "../Components/ingredients-card";
 import { IngredientProps } from "../Interfaces/ingredients-card-props";
 import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-const IngredientItems: IngredientButtonProps[] = [
-    { Label: "Protein", LinkIcon: "../src/Images/protein-icon.png", ItemNumber: 1 },
-    { Label: "Carbo", LinkIcon: "../src/Images/carbo-icon.png", ItemNumber: 2 },
-    { Label: "Fiber", LinkIcon: "../src/Images/fiber-icon.png", ItemNumber: 3 },
-    { Label: "Vitamin", LinkIcon: "../src/Images/vitamin-icon.png", ItemNumber: 4 },
-    { Label: "Fats", LinkIcon: "../src/Images/fats-icon.png", ItemNumber: 5 },
-    { Label: "Mineral", LinkIcon: "../src/Images/minerals-icon.png", ItemNumber: 6 },
-    { Label: "Water", LinkIcon: "../src/Images/water-icon.png", ItemNumber: 7 },
-];
-
-const TempData = [
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "1" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "2" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "3" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "4" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "5" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "6" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "7" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "8" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "9" },
-    { IngredientWeightPerPorsion: 33, TotalCalorie: 13, ImageLink: "../src/Images/HoneyChicken.png", IngredientName: "Beef", IngredientDescription: "Beef is the meat derived from cattle and is one of the most widely consumed proteins worldwide.", NutrientsContained: ["Proteins", "Vitamins", "Fats"], IngredientID: "10" }
-];
-
-function CalculateCalories(Array: IngredientProps[]): number {
-    let totalCalorie = 0;
-    for (let index = 0; index < Array.length; index++) {
-        totalCalorie += (Array[index].IngredientAmount * Array[index].IngredientWeightPerPorsion)
-    }
-    return totalCalorie;
+interface CategoryInterface {
+    category_id: number;
+    category_name: string;
+    category_image: string;
 }
+interface IngredientInterface  {
+    ingredient_id : number,
+    ingredient_name: string,
+    ingredient_image: string,
+    amount_per_unit: string,
+    nutrition_contained: [],
+    category_name: string,
+    category_id: number,
+    nutrition_per_unit: string,
+    calories: number,
+    ingredient_description: string,
+    amount: number
+};
 
 function FindUniqueNutrients(Array: IngredientProps[]): string[] {
     const Nutrient: string[] = [];
@@ -53,9 +42,29 @@ function FindUniqueNutrients(Array: IngredientProps[]): string[] {
 }
 
 function IngredientsPage() {
-    const [Selected, setSelected] = useState(0);
-
+    const navigate = useNavigate();
+    const [Selected, setSelected] = useState(7);
+    const [ingredientList, setIngredientList] = useState<IngredientInterface[]>([]);
+    const [categoryList, setCategoryList] = useState<CategoryInterface[]>([]);
     const [Cart, setCart] = useState<IngredientProps[]>([]);
+    const onChangeCategory = (category_id: number) => {
+        setSelected(category_id);
+
+        getIngredientList(category_id);
+    }
+    const calculateCalories = (ingredients: IngredientProps[]) => {
+        let totalCalorie = 0;
+
+        for (let i = 0; i < ingredients.length; i++) {
+            const ingredient = ingredients[i];
+
+            // Calculate the calorie for each ingredient and add it to totalCalorie
+            console.log(ingredient);
+            totalCalorie += (ingredient.IngredientAmount * ingredient.TotalCalorie);
+        }
+
+        return totalCalorie;
+    };
 
     const cartChange = (Ingredient: IngredientProps, Action: string) => {
         setCart((prevCart) => {
@@ -65,7 +74,7 @@ function IngredientsPage() {
                 // Update the amount of an existing ingredient
                 const updatedCart = [...prevCart];
                 const existingItem = updatedCart[existingItemIndex];
-                const newAmount = Action === "Add" ? existingItem.IngredientAmount + 1 : Math.max(existingItem.IngredientAmount - 1, 0);
+                const newAmount = Action === "Add" ? existingItem.IngredientAmount + 10 : Math.max(existingItem.IngredientAmount - 10, 0);
 
                 // Update the ingredient with the new amount
                 if (newAmount > 0) {
@@ -80,49 +89,92 @@ function IngredientsPage() {
                 }
             } else if (Action === "Add") {
                 // Add the ingredient to the cart if it doesn't already exist and action is "Add"
-                return [...prevCart, { ...Ingredient, IngredientAmount: 1 }];
+                return [...prevCart, { ...Ingredient, IngredientAmount: 10 }];
             } else {
                 // If action is "Reduce" and the item doesn't exist, do nothing
                 return prevCart;
             }
         });
     };
+    const getIngredientList = async (categoryId: number) => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/ingredient/list', {
+                category_id: categoryId
+            });
+            setIngredientList(response.data.data as IngredientInterface[]);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+    const getCategoryList = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/ingredient/category-list', {});
+            const categories = response.data.data as CategoryInterface[];
+            const updatedCategories = [...categories] as CategoryInterface[];
+
+            setCategoryList(updatedCategories);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+
+    const postRecipe = () => {
+        localStorage.setItem('ingredients', JSON.stringify(Cart));
+        navigate('/create-recipe');
+    }
+
+    useEffect(() => {
+        getIngredientList(7);
+        getCategoryList();
+    }, []);
 
     return (
         <>
-            <Container fluid className="position-relative">
+            <Container fluid className="position-relative" style={{ padding: "0" }}>
                 <CustomNavbar />
                 <Container fluid className="text-center">
                     <p onClick={() => setSelected(0)} className="fw-semibold fs-3">Pick Your Ingredients</p>
                 </Container>
                 <Container fluid className="d-flex flex-row align-items-center justify-content-between w-100 px-5 pb-2" style={{ borderBottom: "1px solid rgb(230, 230, 230)" }}>
-                    {IngredientItems.map((item, key) => (
-                        <button key={key} onClick={() => setSelected(item.ItemNumber)} className={`${Selected == item.ItemNumber ? "active" : ""} navbar-button ps-0 pe-2 d-flex flex-row align-items-center justify-content-between`} style={{ maxWidth: "100px", backgroundColor: "white", maxHeight: "30px" }}>
+                    {categoryList.map((item, key) => (
+                        <button key={key} onClick={() => onChangeCategory(item.category_id)} className={`${Selected == item.category_id ? "active" : ""} navbar-button ps-0 pe-2 d-flex flex-row align-items-center justify-content-between`} style={{ maxWidth: "100px", backgroundColor: "white", maxHeight: "30px" }}>
                             <Col className="d-flex flex-row align-items-center justify-content-between">
                                 <div className="d-flex flex-row align-items-center justify-content-center px-1">
-                                    <img src={item.LinkIcon} alt={item.Label} width={20} />
+                                    <img src={item.category_image} alt={item.category_name} width={20} />
                                 </div>
-                                {item.Label}
+                                {item.category_name}
                             </Col>
                         </button>
                     ))}
                 </Container>
                 <Container fluid>
                     <Row>
-                        {TempData.map((data, key) => (
-                            <Col key={key} md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
-                                <IngredientsCard
-                                    IngredientID={data.IngredientID}
-                                    ImageLink={data.ImageLink}
-                                    IngredientDescription={data.IngredientDescription}
-                                    IngredientName={data.IngredientName}
-                                    IngredientWeightPerPorsion={data.IngredientWeightPerPorsion}
-                                    NutrientsContained={data.NutrientsContained}
-                                    TotalCalorie={data.TotalCalorie}
-                                    onAmountChange={cartChange}
-                                />
-                            </Col>
-                        ))}
+                        {ingredientList ? (
+                            ingredientList.map((data) => {
+                                // Find the amount from the cart based on ingredient_id
+                                const ingredientInCart = Cart.find(item => item.IngredientID === data.ingredient_id);
+                                const amount = ingredientInCart ? ingredientInCart.IngredientAmount : 0; // Default to 0 if not in cart
+
+                                return (
+                                    <Col key={data.ingredient_id} md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5">
+                                        <IngredientsCard
+                                            IngredientID={data.ingredient_id}
+                                            ImageLink={data.ingredient_image}
+                                            IngredientDescription={data.ingredient_description || "Ingredient Rich Of Nutrition, Good for health and fitness"}
+                                            IngredientName={data.ingredient_name}
+                                            Nutrient={data.category_name}
+                                            NutrientsContained={data.nutrition_contained}
+                                            NutritionAmount={data.amount}
+                                            TotalCalorie={data.calories}
+                                            onAmountChange={cartChange}
+                                            IngredientAmount={amount} // Pass the amount here
+                                        />
+                                    </Col>
+                                );
+                            })
+                        ) : (
+                            <h3 style={{ marginBottom: "300px", marginTop: "200px", textAlign: "center" }}>No Ingredients Available Yet</h3>
+                        )}
                     </Row>
                 </Container>
                 <Footer />
@@ -147,7 +199,7 @@ function IngredientsPage() {
                             <Col className="d-flex align-items-center justify-content-start">
                                 <MdFastfood />
                                 <div style={{ width: "0.5vw" }}></div>
-                                Calories: {CalculateCalories(Cart)} Cal
+                                Calories: {calculateCalories(Cart)} Cal
                                 <div style={{ width: "0.25vw" }}></div>
                                 <GoTriangleDown onClick={() => { }} />
                             </Col>
@@ -158,7 +210,7 @@ function IngredientsPage() {
                             <Col className="d-flex align-items-center justify-content-end">
                                 <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
                                 <div style={{ width: "1vw" }}></div>
-                                <button type="button" className="btn btn-secondary rounded-pill px-4">Post Recipe</button>
+                                <button type="button" className="btn btn-secondary rounded-pill px-4" onClick={postRecipe}>Post Recipe</button>
                             </Col>
                         </Row>
                     </Col>
