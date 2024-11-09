@@ -1,8 +1,17 @@
 import { Card, Col } from "react-bootstrap";
 import YouMightLikeCardProps from "../Interfaces/you-might-like-card-props";
 import { FaClock } from "react-icons/fa";
-
+import AuthenticationCheck from "./authentication-check.tsx";
+import {useNavigate} from "react-router-dom";
 const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName, FoodCookTime, FoodDescription, FoodID }) => {
+
+const navigate = useNavigate();
+const saveRecipe = async () => {
+    console.log('tes');
+   const check =  AuthenticationCheck(navigate);
+   console.log(check);
+    return;
+}
     return (
         <>
             <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={() => console.log(FoodID)}>
@@ -14,7 +23,7 @@ const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName
                 />
                 <Card.Body style={{ position: "relative" }}>
                     <Card.Title className="m-0 p-0 rounded" style={{ position: "absolute", top: "-10%", left: "10%",right: "10%", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
-                        <Col className="rounded text-center fw-bold fs-4 p-2" style={{
+                        <Col className="rounded text-center fw-bold fs-6 p-2" style={{
                             backgroundColor: "white",
                         }}>{FoodName}</Col>
                     </Card.Title>
@@ -28,7 +37,7 @@ const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName
                             <FaClock />
                             <p className="m-0 fw-semibold">{FoodCookTime} mins</p>
                         </Col>
-                        <Col><button className="btn btn-dark rounded-pill px-3">Add Recipe</button></Col>
+                        <Col><button className="btn btn-dark rounded-pill px-3" onClick={saveRecipe}>Add Recipe</button></Col>
                     </Col>
                 </Card.Body>
             </Card>
