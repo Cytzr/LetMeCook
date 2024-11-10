@@ -1,110 +1,27 @@
-import { Col, Container, Row, Table } from "react-bootstrap";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import {Col, Container, Form, Row, Table} from "react-bootstrap";
 import CustomNavbar from "../Components/navbar";
 import Footer from "../Components/footer";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { IngredientProps } from "../Interfaces/ingredients-card-props";
 import RecipeSteps from "../Components/recipe-steps";
 import { RecipesStepsProps } from "../Interfaces/recipe-steps-props";
 import NutrientsContainedProps from "../Interfaces/nutrients-contained-interface-props";
-
-
-
-const ingredientsData: IngredientProps[] = [
-    {
-        IngredientID: "6b2cd1e8-05df-4b8f-833b-45268cde5417",
-        IngredientName: "Chicken Breast",
-        IngredientWeightPerPorsion: 30,
-        NutrientsContained: ["Omega-3", "Minerals"],
-        IngredientDescription: "Rich in healthy fats.",
-        TotalCalorie: 104.95,
-        ImageLink: "",
-        IngredientAmount: 2
-    },
-    {
-        IngredientID: "c068a747-844d-447b-b6a7-f303ccea0755",
-        IngredientName: "Sweet Potato",
-        IngredientWeightPerPorsion: 20,
-        NutrientsContained: ["Iron", "Minerals", "Fiber", "Protein", "Fats"],
-        IngredientDescription: "Loaded with antioxidants and minerals.",
-        TotalCalorie: 171.66,
-        ImageLink: "",
-        IngredientAmount: 8
-    },
-    {
-        IngredientID: "7cd96b45-6d68-46d0-b083-415fde53669c",
-        IngredientName: "Quinoa",
-        IngredientWeightPerPorsion: 10,
-        NutrientsContained: ["Minerals", "Antioxidants"],
-        IngredientDescription: "Great source of complex carbs.",
-        TotalCalorie: 192.60,
-        ImageLink: "",
-        IngredientAmount: 10
-    },
-    {
-        IngredientID: "a00f107a-13c8-47a4-9da1-457fedc1701a",
-        IngredientName: "Avocado",
-        IngredientWeightPerPorsion: 10,
-        NutrientsContained: ["Fats", "Vitamins", "Iron", "Calcium", "Carbohydrates"],
-        IngredientDescription: "A lean protein source.",
-        TotalCalorie: 260.58,
-        ImageLink: "",
-        IngredientAmount: 4
-    },
-    {
-        IngredientID: "d41043a3-9362-47ef-82dc-d009af602610",
-        IngredientName: "Shrimp",
-        IngredientWeightPerPorsion: 20,
-        NutrientsContained: ["Protein", "Fiber", "Vitamins", "Iron"],
-        IngredientDescription: "High in vitamins and fiber.",
-        TotalCalorie: 352.66,
-        ImageLink: "",
-        IngredientAmount: 1
-    },
-    {
-        IngredientID: "d41043a3-9362-47ef-82dc-d009af602610",
-        IngredientName: "Shrimp",
-        IngredientWeightPerPorsion: 20,
-        NutrientsContained: ["Protein", "Fiber", "Vitamins", "Iron"],
-        IngredientDescription: "High in vitamins and fiber.",
-        TotalCalorie: 352.66,
-        ImageLink: "",
-        IngredientAmount: 1
-    },
-    {
-        IngredientID: "d41043a3-9362-47ef-82dc-d009af602610",
-        IngredientName: "Shrimp",
-        IngredientWeightPerPorsion: 20,
-        NutrientsContained: ["Protein", "Fiber", "Vitamins", "Iron"],
-        IngredientDescription: "High in vitamins and fiber.",
-        TotalCalorie: 352.66,
-        ImageLink: "",
-        IngredientAmount: 1
-    },
-    {
-        IngredientID: "d41043a3-9362-47ef-82dc-d009af602610",
-        IngredientName: "Shrimp",
-        IngredientWeightPerPorsion: 20,
-        NutrientsContained: ["Protein", "Fiber", "Vitamins", "Iron"],
-        IngredientDescription: "High in vitamins and fiber.",
-        TotalCalorie: 352.66,
-        ImageLink: "",
-        IngredientAmount: 1
-    },
-];
-
-const nutrientsData: NutrientsContainedProps[] = [
-    { name: "Calories", amount: 274.52 },
-    { name: "Fats", amount: 26.54 },
-    { name: "Carbohydrates", amount: 31.27 },
-    { name: "Protein", amount: 81.32 },
-    { name: "Protein", amount: 47.45 }
-];
+import {useNavigate } from 'react-router-dom';
+import AuthenticationCheck from "../Components/authentication-check.tsx";
 
 function CreateRecipe() {
+    const navigate = useNavigate();
     const [image, setImage] = useState<File | null>(null);
     const [previewImageUrl, setPreviewImageUrl] = useState("");
+    const [ingredientData, setIngredientData] = useState<IngredientProps[]>([]);
+    const [nutritionsData, setNutritionInfo] = useState<NutrientsContainedProps[]>([]);
+    const [calories, setCalories] = useState(0);
     const [recipeName, setRecipeName] = useState("");
-    const [recipeSteps, setRecipeSteps] = useState<RecipesStepsProps[]>([{ stepName: "", stepDescription: "" }]);
+    const [recipeSteps, setRecipeSteps] = useState<RecipesStepsProps[]>([{step_number: 0, step_name: "", description: "" }]);
+    const loginDataString = localStorage.getItem('login_data');
+    const loginData = loginDataString ? JSON.parse(loginDataString) : null;
 
     const fileToDataString = (file: File) => {
         return new Promise<string>((resolve, reject) => {
@@ -114,30 +31,175 @@ function CreateRecipe() {
             reader.onload = () => resolve(reader.result as string);
         });
     };
-
-    const handleImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFiles = event.target.files as FileList
-        setImage(selectedFiles?.[0]);
-
-        if (!selectedFiles) {
-            return;
+    const checkFile = async (file) => {
+        if (file == null) {
+            Swal.fire({
+                title: 'Invalid File Type',
+                text: 'Please select a PNG or JPG image.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return false;
         }
-        try {
-            const imgUrl = await fileToDataString(selectedFiles?.[0]);
-            setPreviewImageUrl(imgUrl);
-        } catch (error) {
-            console.log(error);
+        const fileType = file.type;
+        if (fileType !== 'image/png' && fileType !== 'image/jpg' && fileType !== 'image/jpeg') {
+            Swal.fire({
+                title: 'Invalid File Type',
+                text: 'Please select a PNG or JPG image.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return false;
         }
+        return true;
     }
+    const handleImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = event.target.files;
+        if (selectedFiles && selectedFiles.length > 0) {
+            const file = selectedFiles[0];
+            const isValidFile = await checkFile(file);
+            if (!isValidFile) {
+                return;
+            }
+            setImage(file);
+            try {
+                const imgUrl = await fileToDataString(file);
+                setPreviewImageUrl(imgUrl);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
 
     const handleStepsChange = (recipeDetail: RecipesStepsProps, index: number) => {
         setRecipeSteps((prevStep) => {
             const editedStep = [...prevStep];
-            editedStep[index].stepName = recipeDetail.stepName;
-            editedStep[index].stepDescription = recipeDetail.stepDescription;
+            editedStep[index].step_number = index+1;
+            editedStep[index].step_name = recipeDetail.step_name;
+            editedStep[index].description = recipeDetail.description;
             return editedStep;
         });
     }
+    const [cookTime, setCookTime] = useState(0);
+    const [recipeDescription, setRecipeDescription] = useState('');
+
+    const handleCookTimeChange = (event) => {
+        setCookTime(event.target.value);
+    };
+
+    const handleDescriptionChange = (event) => {
+        setRecipeDescription(event.target.value);
+    };
+
+    const createRecipe = async () => {
+        AuthenticationCheck(navigate,'/create-recipe');
+        console.log(image);
+
+        if (!nutritionsData || !recipeSteps || !ingredientData || !recipeName || !loginData.user_id || !recipeDescription || !cookTime || !calories) {
+            await Swal.fire({
+                title: 'Incomplete Data',
+                text: 'Please complete all fields before submitting.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
+        const isValidFile = await checkFile(image);
+        if (!isValidFile) {
+            return;
+        }
+        const formData = new FormData();
+        const filteredNutritionData = nutritionsData.filter(nutrient => nutrient.category_name !== "Calories");
+
+        formData.append('nutrition_info', JSON.stringify(filteredNutritionData));
+        formData.append('recipe_step', JSON.stringify(recipeSteps));
+        formData.append('ingredient_list', JSON.stringify(ingredientData));
+        formData.append('recipe_image', image);
+        formData.append('recipe_name', recipeName);
+        formData.append('user_id', loginData.user_id);
+        formData.append('recipe_description', recipeDescription);
+        formData.append('cook_time', cookTime.toString());
+        formData.append('calories', calories)
+
+        try {
+            Swal.showLoading();
+            const response = await axios.post('http://localhost:8000/api/recipe/create', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.data.error == 1) {
+                Swal.fire({
+                    title: 'Failed',
+                    text: response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    Swal.close();
+                });
+            } else {
+                Swal.fire({
+                    title: 'Success',
+                    text: response.data.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    Swal.close();
+                    localStorage.removeItem('ingredients');
+                    navigate('/recipes');
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Failed',
+                text: 'Failed to make recipe',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                Swal.close();
+            });
+            console.log('error ', error);
+        }
+        return;
+    };
+    useEffect(() => {
+        const ingredientString = localStorage.getItem('ingredients');
+        const ingredients = ingredientString ? JSON.parse(ingredientString) : null;
+        setIngredientData(ingredients as IngredientProps[]);
+
+        const categoryTotals: Record<string, { amount: number; category_id?: number }> = {}; // Initialize as an object with amounts and category_id
+
+        ingredients?.forEach((ingredient) => {
+            const ingredientFactor = ingredient.amount / 10; // Factor to adjust nutrient amount
+
+            ingredient.nutrition_contains.forEach((nutrient: { category_name: string, amount: number; category_id?: number }) => {
+                const adjustedAmount = parseFloat((nutrient.amount * ingredientFactor).toFixed(1));
+                const categoryName = nutrient.category_name.includes("Vitamin") ? "Vitamins" : nutrient.category_name;
+
+                // Accumulate the total for each category with category_id
+                if (categoryTotals[categoryName]) {
+                    categoryTotals[categoryName].amount += adjustedAmount;
+                } else {
+                    categoryTotals[categoryName] = { amount: adjustedAmount, category_id: nutrient.category_id };
+                }
+            });
+
+            const totalCalories = parseFloat((ingredient.calories * ingredient.amount).toFixed(1));
+            setCalories(totalCalories);
+            categoryTotals["Calories"] = {
+                amount: (categoryTotals["Calories"]?.amount || 0) + totalCalories,
+            };
+        });
+
+        const result = Object.entries(categoryTotals).map(([name, data]) => ({
+            category_name: name,
+            amount: parseFloat(data.amount.toFixed(1)),
+            category_id: data.category_id
+        }));
+
+        console.log("Total amounts per category:", result);
+        setNutritionInfo(result as NutrientsContainedProps[]);
+    }, []);
     console.log(recipeSteps);
 
     return (
@@ -170,12 +232,13 @@ function CreateRecipe() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {ingredientsData.map((data, key) => (
-                                                <tr key={key}>
-                                                    <td style={{ fontSize: '1.2vw', fontWeight: "normal", textAlign: "center", padding: "1vw" }}>{data.IngredientName}</td>
-                                                    <td style={{ fontSize: '1.2vw', fontWeight: "normal", textAlign: "center", padding: "1vw" }}>{data.IngredientAmount * data.IngredientWeightPerPorsion}</td>
-                                                </tr>
-                                            ))}
+                                        {ingredientData ? (ingredientData.map((data, key) => (
+                                            <tr key={key}>
+                                                <td style={{ fontSize: '1.2vw', fontWeight: "normal", textAlign: "center", padding: "1vw" }}>{data.ingredient_name}</td>
+                                                <td style={{ fontSize: '1.2vw', fontWeight: "normal", textAlign: "center", padding: "1vw" }}>{data.amount} gram</td>
+                                            </tr>
+                                        ))) : <div></div>}
+
                                         </tbody>
                                     </Table>
                                 </Col>
@@ -198,16 +261,46 @@ function CreateRecipe() {
                             </thead>
                             <tbody>
                                 <tr>
-                                    {nutrientsData.map((nutrient, key) => (
-                                        <td key={key} className="text-center">
-                                            <div style={{ padding: "0.5vw" }}></div>
-                                            <p>{nutrient.name}</p>
-                                            <p>{nutrient.amount} grams</p>
-                                        </td>
-                                    ))}
+                                    {nutritionsData ? (
+                                        nutritionsData.map((nutrient, key) => (
+                                            <td key={key} className="text-center">
+                                                <div style={{ padding: "0.5vw" }}></div>
+                                                <p>{nutrient.category_name}</p>
+                                                <p>{nutrient.amount} grams</p>
+                                            </td>
+                                        ))
+                                    ) : <div></div>}
+
                                 </tr>
                             </tbody>
                         </Table>
+
+                        {/* Recipe Information Form Below the Table */}
+                        <h3 className="mt-4">Recipe Information</h3>
+                        <Form>
+                            <Form.Group controlId="formCookTime">
+                                <Form.Label>Cook Time (in minutes)</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={cookTime}
+                                    onChange={handleCookTimeChange}
+                                    placeholder="Enter cook time"
+                                    min={0}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="formDescription">
+                                <Form.Label>Recipe Description</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    value={recipeDescription}
+                                    onChange={handleDescriptionChange}
+                                    placeholder="Enter recipe description"
+                                />
+                            </Form.Group>
+                        </Form>
+
                     </Col>
                 </Col>
 
@@ -218,7 +311,7 @@ function CreateRecipe() {
                             <div style={{ display: "flex", gap: "0.5vw", alignItems: "center" }}>
                                 <h2>Directions</h2>
                                 <div>
-                                    <button onClick={() => setRecipeSteps([...recipeSteps, { stepName: "", stepDescription: "" }])}
+                                    <button onClick={() => setRecipeSteps([...recipeSteps, {step_number: 0, step_name: "", description: "" }])}
                                         style={{ backgroundColor: "green", color: "white", marginRight: "0.5vw", border: "none", borderRadius: "1vw", paddingLeft: "0.9vw", paddingRight: "0.9vw" }}>
                                         +
                                     </button>
@@ -243,12 +336,7 @@ function CreateRecipe() {
                             style={{ backgroundColor: "black", textAlign: "center", color: "white", borderRadius: "20vw", height: "3.5vw", width: "3.5vw", fontSize: "1.5vw", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <p className="m-0"></p>
                         </div>
-                        <button onClick={() => {
-                            console.log(image);
-                            console.log(recipeName);
-                            console.log(previewImageUrl);
-                            console.log(recipeName);
-                        }} style={{ color: "white", padding: "0.8vw", backgroundColor: "black", border: "none", borderRadius: "1vw" }}>Submit</button>
+                        <button onClick={createRecipe} style={{ color: "white", padding: "0.8vw", backgroundColor: "black", border: "none", borderRadius: "1vw" }}>Submit</button>
                     </Col>
                 </Col>
             </Container>

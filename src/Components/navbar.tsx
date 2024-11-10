@@ -8,7 +8,6 @@ function CustomNavbar() {
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
     const navigate = useNavigate();
     const isActive = (path: string) => location.pathname === path;
-    console.log(loginData);
     const toLoginPage = () => {
         navigate('/login');
     };

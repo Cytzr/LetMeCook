@@ -1,7 +1,6 @@
 export default interface IngredientsCardProps {
     IngredientID: number,
     IngredientName: string,
-    // IngredientWeightPerPorsion: number,
     Nutrient: string,
     NutrientsContained: [],
     IngredientDescription: string,
@@ -13,13 +12,10 @@ export default interface IngredientsCardProps {
 }
 
 export interface IngredientProps {
-    IngredientID: number,
-    IngredientName: string,
-    // IngredientWeightPerPorsion: number,
-    Nutrient: string,
-    NutrientsContained: [],
-    IngredientDescription: string,
-    TotalCalorie: number,
-    ImageLink: string,
-    IngredientAmount: number,
+    ingredient_id: number,
+    ingredient_name: string,
+    nutrient: string,
+    nutrition_contains: [],
+    calories: number,
+    amount: number,
 }

@@ -13,25 +13,21 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
     const handleAmount = (PrevAmount: number, newAmount: number) => {
         if (PrevAmount > newAmount) {
             Data.onAmountChange({
-                IngredientID: Data.IngredientID,
-                ImageLink: Data.ImageLink,
-                IngredientAmount: newAmount,
-                IngredientDescription: Data.IngredientDescription,
-                Nutrient: Data.Nutrient,
-                IngredientName: Data.IngredientName,
-                NutrientsContained: Data.NutrientsContained,
-                TotalCalorie: Data.TotalCalorie,
+                ingredient_id: Data.IngredientID,
+                amount: newAmount,
+                nutrient: Data.Nutrient,
+                ingredient_name: Data.IngredientName,
+                nutrition_contains: Data.NutrientsContained,
+                calories: Data.TotalCalorie,
             }, "Reduce");
         } else if (PrevAmount < newAmount) {
             Data.onAmountChange({
-                IngredientID: Data.IngredientID,
-                ImageLink: Data.ImageLink,
-                IngredientAmount: newAmount,
-                Nutrient: Data.Nutrient,
-                IngredientDescription: Data.IngredientDescription,
-                IngredientName: Data.IngredientName,
-                NutrientsContained: Data.NutrientsContained,
-                TotalCalorie: Data.TotalCalorie,
+                ingredient_id: Data.IngredientID,
+                amount: newAmount,
+                nutrient: Data.Nutrient,
+                ingredient_name: Data.IngredientName,
+                nutrition_contains: Data.NutrientsContained,
+                calories: Data.TotalCalorie,
             }, "Add");
         }
         setAmount(newAmount);

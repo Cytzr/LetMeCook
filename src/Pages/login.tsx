@@ -12,7 +12,8 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
+    const redirect = localStorage.getItem('redirect');
+    const redirectPage = redirect ? JSON.parse(redirect) : null;
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -46,9 +47,13 @@ function Login() {
 
         } else {
             Swal.close();
-            console.log(response.data.data);
             localStorage.setItem('login_data', JSON.stringify(response.data.data))
-            navigate('/');
+            if (!redirectPage) {
+                navigate('/');
+                localStorage.removeItem('redirect');
+            } else {
+                navigate(redirectPage.page);
+            }
         }
 
 
