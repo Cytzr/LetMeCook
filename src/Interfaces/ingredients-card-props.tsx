@@ -1,19 +1,23 @@
-export interface IngredientsCardProps {
-    IngredientID: string,
+export default interface IngredientsCardProps {
+    IngredientID: number,
     IngredientName: string,
-    IngredientWeightPerPorsion: number,
-    NutrientsContained: string[],
+    // IngredientWeightPerPorsion: number,
+    Nutrient: string,
+    NutrientsContained: [],
     IngredientDescription: string,
     TotalCalorie: number,
     ImageLink: string,
+    NutritionAmount: number,
+    IngredientAmount: number,
     onAmountChange: (Data: IngredientProps, Action: string) => void;
 }
 
 export interface IngredientProps {
-    IngredientID: string,
+    IngredientID: number,
     IngredientName: string,
-    IngredientWeightPerPorsion: number,
-    NutrientsContained: string[],
+    // IngredientWeightPerPorsion: number,
+    Nutrient: string,
+    NutrientsContained: [],
     IngredientDescription: string,
     TotalCalorie: number,
     ImageLink: string,
