@@ -10,7 +10,9 @@ import Login from './Pages/login.tsx'
 import Register from './Pages/register.tsx'
 import Home from './Pages/home.tsx'
 import CreateRecipe from './Pages/CreateRecipe.tsx'
+import RecipeDetail from './Pages/RecipeDetail.tsx'
 import OurExpertPage from "./Pages/OurExpertPage.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +50,20 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  {
+    path: "/home",
+    element: <Home />
+  },
+  {
+    path: "/recipe-detail/:recipeId",
+    element: <RecipeDetail />,
+    // loader: async ({ request, params }) => {
+    //   return fetch(
+    //     `/fake/api/teams/${params.teamId}.json`,
+    //     { signal: request.signal }
+    //   );
+    // },
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
