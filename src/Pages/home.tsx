@@ -2,9 +2,37 @@
     import { Container, Col, Row, Button } from 'react-bootstrap';
     import Navbar from '../Components/navbar.tsx'
     import Footer from '../Components/footer.tsx'
+    import YouMightLikeCard from "../Components/you-might-like-card.tsx";
+    import {useEffect, useState} from "react";
+    import {RecipeInterface} from "./RecipesPage.tsx";
+    import axios from "axios";
+    import {useNavigate} from "react-router-dom";
 
     function Home() {
+        const navigate = useNavigate();
+        const [popularItems, setPopularItems] = useState<RecipeInterface[]>([]);
 
+
+        const goToRecipeList = () => {
+            navigate('../recipes');
+            window.scrollTo(0, 0);
+        }
+
+        const goToIngredientList = () => {
+            navigate('../ingredients');
+            window.scrollTo(0, 0);
+        }
+        const getPopularRecipeList = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/recipe/get-popular');
+                setPopularItems(response.data.data as RecipeInterface[]);
+            } catch (error) {
+                console.error("Error fetching recommended items:", error);
+            }
+        };
+        useEffect(() => {
+            getPopularRecipeList()
+        }, []);
         return (
             <><Navbar></Navbar>
                 <section className='bg-1 align-content-center'>
@@ -40,8 +68,8 @@
                                         <p>Fresh, Flavorful, Fit - Your Guide to Healthy Deliciousness!</p>
                                     </Row>
                                     <Col className='d-flex'>
-                                        <a href=""><Button className='border-white border-radius-3 btn-dark btn-spacing'>BMI Calculator</Button></a>
-                                        <a href=""><Button className='border-white border-radius-3 btn-dark'>Create Recipes</Button>  </a>
+                                        <Button onClick={goToRecipeList} className='border-white border-radius-3 btn-dark btn-spacing'>Find Recipes</Button>
+                                        <Button onClick={goToIngredientList} className='border-white border-radius-3 btn-dark'>Create Recipes</Button>
                                     </Col>  
                                 </Row>
                             </div>
@@ -50,6 +78,28 @@
 
                     <Container className='pt-5 mt-4'>
                         <h2 className='fw-bold color-dark'>Popular Recipes</h2>
+                    </Container>
+                    <Container fluid>
+                        <Row>
+                            {!popularItems ? (
+                                <Col className="text-center" style={{marginTop: "20px", marginBottom: "20px"}}>
+                                    <h3>No Recipes Available</h3>
+                                    <p>Please try again later or check your search criteria.</p>
+                                </Col>
+                            ) : (
+                                popularItems.map((item, key) => (
+                                    <Col md={3} className="d-flex align-items-center justify-content-center mb-5 mt-5" key={key}>
+                                        <YouMightLikeCard
+                                            FoodCookTime={item.cook_time}
+                                            FoodDescription={item.recipe_description ? item.recipe_description : "Start your day with this delightful meal"}
+                                            FoodID={item.recipe_id}
+                                            FoodName={item.recipe_name}
+                                            ImageLink={item.recipe_image ? item.recipe_image : '../src/Images/Burger.jpg'}
+                                        />
+                                    </Col>
+                                ))
+                            )}
+                        </Row>
                     </Container>
                 </section>
             <Footer></Footer></> 

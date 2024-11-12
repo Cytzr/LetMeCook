@@ -12,9 +12,13 @@ const saveRecipe = async () => {
    console.log(check);
     return;
 }
+const showDetail = async () => {
+    navigate(`/recipe-detail/${FoodID}`);
+    window.scrollTo(0, 0);
+}
     return (
         <>
-            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={() => console.log(FoodID)}>
+            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={showDetail}>
                 <Card.Img
                     src={ImageLink}
                     alt={FoodName}
