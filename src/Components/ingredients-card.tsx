@@ -44,7 +44,7 @@ const IngredientsCard: React.FC<IngredientsCardProps> = (Data: IngredientsCardPr
             <Card.Body>
                 <Card.Title>
                     <Row>
-                        <Col style={{ width: "300px", fontSize: "19px" }}>{Data.IngredientName}</Col>
+                        <Col style={{ width: "300px", fontSize: "15px", fontWeight:"650"}}>{Data.IngredientName}</Col>
                         <Col>
                             <div className="fw-bold" style={{ fontSize: "1.5vh", justifyContent: "center", textAlign: "end", alignContent: "center", paddingRight: "0px" }}>
                                 {Data.TotalCalorie} Cal

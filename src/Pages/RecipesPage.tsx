@@ -9,7 +9,7 @@ interface CategoryInterface {
     category_id: number;
     category_name: string;
 }
-interface RecipeInterface {
+export interface RecipeInterface {
     recipe_name: string;
     recipe_id: number;
     recipe_image: string | null;
@@ -107,25 +107,36 @@ export default function RecipesPage() {
                 </Row>
             </Container>
             <Container fluid className="px-0 mb-4">
-                <Carousel>
-                    {popularItems.map((item, key) => (
-                        <Carousel.Item interval={3000} onClick={() => console.log(item.recipe_id)} key={key}>
-                            <Container fluid className="p-0" style={{ height: '40vh' }}>
-                                <img src={item.recipe_image ? item.recipe_image : '../src/Images/Burger.jpg'}
-                                     className="d-block w-100 h-100"
-                                    style={{ objectFit: 'cover' }} />
-                            </Container>
-                            <Carousel.Caption>
-                                <h3>{item.recipe_name}</h3>
-                                <p>{item.recipe_description}</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                    ))}
-                </Carousel>
+
+                {popularItems.length > 0 && (
+                    <Carousel>
+                        {popularItems.map((item, key) => (
+                            <Carousel.Item
+                                key={key}
+                                interval={3000}
+                                onClick={() => console.log(item.recipe_id)}
+                            >
+                                <Container fluid className="p-0" style={{ height: '40vh' }}>
+                                    <img
+                                        src={item.recipe_image ? item.recipe_image : '../src/Images/Burger.jpg'}
+                                        className="d-block w-100 h-100"
+                                        style={{ objectFit: 'cover' }}
+                                        alt={item.recipe_name || 'Default image'}
+                                    />
+                                </Container>
+                                <Carousel.Caption>
+                                    <h3>{item.recipe_name}</h3>
+                                    <p>{item.recipe_description}</p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+                )}
+
             </Container>
 
             <Container fluid className="text-center mb-4">
-                {recipeList? (
+                {recipeList.length > 0 ? (
                     <Col>
                         <p className="fw-semibold fs-3 m-0">You Might Like</p>
                     </Col>
@@ -134,8 +145,8 @@ export default function RecipesPage() {
             </Container>
             <Container fluid>
                 <Row>
-                    {!recipeList ? (
-                        <Col className="text-center" style={{marginTop: "20px", marginBottom: "20px"}}>
+                    {recipeList.length == 0 ? (
+                        <Col className="text-center" style={{marginTop: "100px", marginBottom: "120px"}}>
                             <h3>No Recipes Available</h3>
                             <p>Please try again later or check your search criteria.</p>
                         </Col>

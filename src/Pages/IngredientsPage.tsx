@@ -27,27 +27,15 @@ interface IngredientInterface  {
     ingredient_description: string,
     amount: number
 };
-
-function FindUniqueNutrients(Array: IngredientProps[]): string[] {
-    const Nutrient: string[] = [];
-
-    for (let index = 0; index < Array.length; index++) {
-        for (let index2 = 0; index < Array[index].nutrition_contains.length; index2++) {
-            if (!Nutrient.find((item) => item === Array[index].nutrition_contains[index2])) {
-                Nutrient.push(Array[index].nutrition_contains[index2]);
-            }
-        }
-    }
-    return Nutrient;
-}
-
 function IngredientsPage() {
     const navigate = useNavigate();
     const [Selected, setSelected] = useState(7);
     const [ingredientList, setIngredientList] = useState<IngredientInterface[]>([]);
     const [categoryList, setCategoryList] = useState<CategoryInterface[]>([]);
+    const [emptyText, setEmptyText] = useState('Please Wait A Moment...');
     const [Cart, setCart] = useState<IngredientProps[]>([]);
     const onChangeCategory = (category_id: number) => {
+        setIngredientList([] as IngredientInterface[]);
         setSelected(category_id);
 
         getIngredientList(category_id);
@@ -101,6 +89,10 @@ function IngredientsPage() {
             const response = await axios.post('http://localhost:8000/api/ingredient/list', {
                 category_id: categoryId
             });
+            console.log(response.data.data.length);
+            if (response.data.data.length == 0) {
+                setEmptyText("No ingredient available currently");
+            }
             setIngredientList(response.data.data as IngredientInterface[]);
         } catch (error) {
             console.error("Error fetching recommended items:", error);
@@ -126,6 +118,7 @@ function IngredientsPage() {
         }
         localStorage.setItem('ingredients', JSON.stringify(Cart));
         navigate('/create-recipe');
+        window.scrollTo(0, 0);
     }
 
     useEffect(() => {
@@ -154,7 +147,7 @@ function IngredientsPage() {
                 </Container>
                 <Container fluid>
                     <Row>
-                        {ingredientList ? (
+                        {ingredientList.length > 0 ? (
                             ingredientList.map((data) => {
                                 // Find the amount from the cart based on ingredient_id
                                 const ingredientInCart = Cart.find(item => item.ingredient_id === data.ingredient_id);
@@ -178,7 +171,7 @@ function IngredientsPage() {
                                 );
                             })
                         ) : (
-                            <h3 style={{ marginBottom: "300px", marginTop: "200px", textAlign: "center" }}>No Ingredients Available Yet</h3>
+                            <h3 style={{ marginBottom: "200px", marginTop: "200px", textAlign: "center" }}>{emptyText}</h3>
                         )}
                     </Row>
                 </Container>
