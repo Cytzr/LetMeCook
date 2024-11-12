@@ -3,13 +3,47 @@ import YouMightLikeCardProps from "../Interfaces/you-might-like-card-props";
 import { FaClock } from "react-icons/fa";
 import AuthenticationCheck from "./authentication-check.tsx";
 import {useNavigate} from "react-router-dom";
-const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName, FoodCookTime, FoodDescription, FoodID }) => {
+import axios from "axios";
+import Swal from 'sweetalert2';
 
+
+const YouMightLikeCard: React.FC<YouMightLikeCardProps> = ({ ImageLink, FoodName, FoodCookTime, FoodDescription, FoodID }) => {
 const navigate = useNavigate();
+    const loginDataString = localStorage.getItem('login_data');
+    const loginData = loginDataString ? JSON.parse(loginDataString) : null;
 const saveRecipe = async () => {
-    console.log('tes');
-   const check =  AuthenticationCheck(navigate, '/recipes');
-   console.log(check);
+   AuthenticationCheck(navigate, '/recipes');
+
+    try {
+        const response = await axios.post('http://localhost:8000/api/recipe/favorite/add', {
+            user_id: loginData.user_id,
+            recipe_id: FoodID
+        });
+        if (response.data.error == 1) {
+            Swal.fire({
+                title: 'Failed',
+                text: response.data.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                Swal.close();
+            });
+        } else {
+            Swal.fire({
+                title: 'Success',
+                text: response.data.message,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                Swal.close();
+                localStorage.removeItem('ingredients');
+                navigate('/recipes');
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching recommended items:", error);
+    }
+
     return;
 }
 const showDetail = async () => {
