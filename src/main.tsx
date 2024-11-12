@@ -68,11 +68,11 @@ const router = createBrowserRouter([
     // },
   },
   {
-    path: "/user-id/saved-menu",
+    path: "/saved-menu",
     element: <LikedRecipe />
   },
   {
-    path: "/myRecipe", 
+    path: "/my-recipe",
     element: <MyRecipe/>
   }
 ]);

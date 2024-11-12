@@ -65,7 +65,8 @@ function CustomNavbar() {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="/user-id/saved-menu">Saved Menu</Dropdown.Item>
+                                        <Dropdown.Item href="/saved-menu">Saved Recipe</Dropdown.Item>
+                                        <Dropdown.Item href="/my-recipe">My Recipe</Dropdown.Item>
                                         <Dropdown.Item href="#" onClick={logout}>Logout</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>

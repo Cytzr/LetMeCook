@@ -18,6 +18,8 @@ export interface RecipeInterface {
     calories: number;
 }
 export default function RecipesPage() {
+    const loginDataString = localStorage.getItem('login_data');
+    const loginData = loginDataString ? JSON.parse(loginDataString) : null;
     const [selectedFilter, setSelectedFilter] = useState(0);
     const [popularItems, setPopularItems] = useState<RecipeInterface[]>([]);
     const [recipeList, setRecipeList] = useState<RecipeInterface[]>([]);
@@ -48,6 +50,7 @@ export default function RecipesPage() {
             const response = await axios.post('http://localhost:8000/api/recipe/all', {
                 category_id: category_id !== 0 ? category_id : null,
                 search: search,
+                user_id: loginData.user_id
             });
             if (response.data.error === 1) {
                 setCategoryList([]);

@@ -15,6 +15,7 @@ const saveRecipe = async () => {
    AuthenticationCheck(navigate, '/recipes');
 
     try {
+        Swal.showLoading();
         const response = await axios.post('http://localhost:8000/api/recipe/favorite/add', {
             user_id: loginData.user_id,
             recipe_id: FoodID
@@ -36,7 +37,6 @@ const saveRecipe = async () => {
                 confirmButtonText: 'OK'
             }).then(() => {
                 Swal.close();
-                localStorage.removeItem('ingredients');
                 navigate('/recipes');
             });
         }
@@ -52,8 +52,8 @@ const showDetail = async () => {
 }
     return (
         <>
-            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={showDetail}>
-                <Card.Img
+            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} >
+                <Card.Img onClick={showDetail}
                     src={ImageLink}
                     alt={FoodName}
                     className="img-fluid rounded-top w-100 object-fit-cover"
