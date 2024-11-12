@@ -10,8 +10,11 @@ import Login from './Pages/login.tsx'
 import Register from './Pages/register.tsx'
 import Home from './Pages/home.tsx'
 import CreateRecipe from './Pages/CreateRecipe.tsx'
-import RecipeDetail from './Pages/RecipeDetail.tsx'
 import OurExpertPage from "./Pages/OurExpertPage.tsx";
+import LikedRecipe from './Pages/likedRecipe.tsx'
+import MyRecipe from './Pages/myRecipe.tsx'
+import RecipeDetail from './Pages/RecipeDetail.tsx'
+
 
 const router = createBrowserRouter([
   {
@@ -63,6 +66,14 @@ const router = createBrowserRouter([
     //     { signal: request.signal }
     //   );
     // },
+  },
+  {
+    path: "/user-id/saved-menu",
+    element: <LikedRecipe />
+  },
+  {
+    path: "/myRecipe", 
+    element: <MyRecipe/>
   }
 ]);
 
