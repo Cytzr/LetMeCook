@@ -8,6 +8,7 @@ import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
 import { useNavigate } from 'react-router-dom'; 
 import axios from "axios";
+import AuthenticationCheck from "../Components/authentication-check.tsx";
 
 
 interface CategoryInterface {
@@ -112,6 +113,10 @@ function IngredientsPage() {
     };
 
     const postRecipe = () => {
+        const auth = AuthenticationCheck(navigate, '/recipes');
+        if (!auth) {
+            return;
+        }
         const ingredient = localStorage.getItem('ingredients');
         const ingredientData = ingredient ? JSON.parse(ingredient) : null;
         if (ingredientData) {

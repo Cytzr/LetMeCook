@@ -1,7 +1,10 @@
 export interface CommentsProps {
-    commenterID: string,
+    user_id: string,
+    forum_comment_id: string,
     commenterImage: string,
-    commenterName: string,
+    username: string,
     comment: string,
-    isDoctor: boolean,
+    is_expert: number,
+    like_amount: number,
+    likes: []
 }

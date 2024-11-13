@@ -12,6 +12,7 @@ function AuthenticationCheck(navigate, page) {
             showCancelButton: true,
             confirmButtonText: 'Login',
             cancelButtonText: 'Back',
+            showLoaderOnConfirm: false
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.close();
@@ -25,7 +26,10 @@ function AuthenticationCheck(navigate, page) {
                 return false;
             }
         });
+        return false;
     }
+    return true;
+
 }
 
 export default AuthenticationCheck;

@@ -50,7 +50,7 @@ export default function RecipesPage() {
             const response = await axios.post('http://localhost:8000/api/recipe/all', {
                 category_id: category_id !== 0 ? category_id : null,
                 search: search,
-                user_id: loginData.user_id
+                user_id: loginData ? loginData.user_id : null
             });
             if (response.data.error === 1) {
                 setCategoryList([]);

@@ -1,6 +1,8 @@
 interface myRecipe {
       FoodName: string,
-      imageLink: string,
+      ImageLink: string,
+      FoodID: number,
+      FoodDescription: string,
 }
 
 export default myRecipe;

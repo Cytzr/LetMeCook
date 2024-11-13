@@ -2,10 +2,12 @@ import { Card, Col, Row } from "react-bootstrap";
 import LikedRecipesCardProps from "../Interfaces/liked-recipes-card-props";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import {useNavigate} from "react-router-dom";
 
 const LikedRecipesCard: React.FC<LikedRecipesCardProps> = ({ FoodName, ImageLink, FoodID, FoodDescription, onRecipeRemoved  }) => {
     const loginDataString = localStorage.getItem('login_data');
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
+    const navigate = useNavigate();
     const removeRecipe = async () => {
         try {
             Swal.fire({
@@ -47,10 +49,14 @@ const LikedRecipesCard: React.FC<LikedRecipesCardProps> = ({ FoodName, ImageLink
             console.error("Error fetching recommended items:", error);
         }
     };
+    const showDetail = async () => {
+        navigate(`/recipe-detail/${FoodID}`);
+        window.scrollTo(0, 0);
+    }
     return (
         <>
             <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}}>
-                <Card.Img
+                <Card.Img onClick={showDetail}
                     src={ImageLink}
                     alt={FoodName}
                     className="img-fluid rounded-top w-100 object-fit-cover"

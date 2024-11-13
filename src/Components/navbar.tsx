@@ -13,7 +13,7 @@ function CustomNavbar() {
     };
     const logout = () => {
         localStorage.clear();
-        window.location.reload();
+        navigate('/');
     }
     return (
         <div className="container-fluid main-container">
@@ -33,9 +33,6 @@ function CustomNavbar() {
                         </div>
                         <div className="col">
                             <a href="/experts"><button className={`navbar-button ${isActive('/experts') ? 'active' : ''}`}>Our Experts</button></a>
-                        </div>
-                        <div className="col">
-                            <a href="/about-us"><button className={`navbar-button ${isActive('/about-us') ? 'active' : ''}`}>About Us</button></a>
                         </div>
                     </div>
                 </div>
