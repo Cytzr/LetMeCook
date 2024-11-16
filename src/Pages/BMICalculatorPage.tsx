@@ -109,7 +109,7 @@ const BMICalculator: React.FC = () => {
                     </Col>
                 </Row>
 
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>BMI Results</Modal.Title>
                     </Modal.Header>
