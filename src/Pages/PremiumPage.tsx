@@ -1,15 +1,18 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal, Button } from "react-bootstrap";
 import Footer from "../Components/footer";
 import CustomNavbar from "../Components/navbar";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { BsFillXCircleFill } from "react-icons/bs";
 import "../Styles/premium-page.css"
 import { useState } from "react";
+import QRCode from "react-qr-code";
 
 function PremiumPage() {
     const [Basic, setBasic] = useState(false);
     const [Gourmet, setGourmet] = useState(false);
     const [Michellin, setMichellin] = useState(false);
+
+    const [showModal, setShowModal] = useState<boolean>(false);
     return (
         <>
             <CustomNavbar />
@@ -139,14 +142,35 @@ function PremiumPage() {
                                 </div>
                             </Col>
                             <Col className="d-flex align-items-center justify-content-center">
-                                <button className="premium-button">Purchase Plan</button>
+                                <button className="premium-button" onClick={() => setShowModal(true)}>Purchase Plan</button>
                             </Col>
                         </Col>
                     </Col>
-                    <Col>
-
-                    </Col>
                 </Container >
+
+                <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                    <Modal.Header>
+                        <Modal.Title style={{ width: "100%", textAlign: "center" }}>Please Finish Payment</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Col>
+                            <QRCode
+                                size={256}
+                                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                value={"https://youtu.be/dQw4w9WgXcQ?si=OQy-HubX5nssX7GW"}
+                                viewBox={`0 0 256 256`}
+                            />
+                        </Col>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={() => setShowModal(false)}>
+                            Finish Payment
+                        </Button>
+                        <Button variant="danger" onClick={() => setShowModal(false)}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Container>
             <Footer />
         </>
