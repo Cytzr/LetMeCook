@@ -14,6 +14,9 @@ import OurExpertPage from "./Pages/OurExpertPage.tsx";
 import LikedRecipe from './Pages/likedRecipe.tsx'
 import MyRecipe from './Pages/myRecipe.tsx'
 import RecipeDetail from './Pages/RecipeDetail.tsx'
+import ExpertDetail from './Pages/ExpertDetail.tsx'
+import PremiumPage from './Pages/PremiumPage.tsx'
+import BMICalculator from './Pages/BMICalculatorPage.tsx'
 
 
 const router = createBrowserRouter([
@@ -42,8 +45,8 @@ const router = createBrowserRouter([
     element: <OurExpertPage />,
   },
   {
-    path: "/about-us",
-    element: <App />,
+    path: "/bmi-calculator",
+    element: <BMICalculator />,
   },
   {
     path: "/login",
@@ -72,13 +75,21 @@ const router = createBrowserRouter([
     element: <LikedRecipe />
   },
   {
-    path: "/myRecipe", 
-    element: <MyRecipe/>
+    path: "/myRecipe",
+    element: <MyRecipe />
+  },
+  {
+    path: "/expert-detail/:doctorId",
+    element: <ExpertDetail />
+  },
+  {
+    path: "/premium",
+    element: <PremiumPage />
   }
 ]);
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
-    <RouterProvider router={router} />
+  <RouterProvider router={router} />
   // </StrictMode>,
 )
