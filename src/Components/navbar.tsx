@@ -1,13 +1,20 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../Styles/navbar-style.css'
 import { Dropdown } from 'react-bootstrap';
+import {useState} from "react";
 
 function CustomNavbar() {
     const location = useLocation();
     const loginDataString = localStorage.getItem('login_data');
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
     const navigate = useNavigate();
+    const [isHovered, setIsHovered] = useState(false);
     const isActive = (path: string) => location.pathname === path;
+    const premiumText = isHovered
+        ? loginData.is_premium === 0
+            ? 'Sign in Premium Now'
+            : 'You are Premium'
+        : 'Premium';
     const toLoginPage = () => {
         navigate('/login');
     };
@@ -52,11 +59,25 @@ function CustomNavbar() {
 
                         {loginData && (<div className='d-flex align-items-center justify-content-between'>
                             <div className="col">
-                                <a href="/premium">
-                                    <button className='premium-button'>
-                                        <div className="premium-text">Premium</div>
+                                {loginData.is_premium === 0 ? (
+                                    <a href="/premium">
+                                        <button
+                                            className="premium-button"
+                                            onMouseEnter={() => setIsHovered(true)}
+                                            onMouseLeave={() => setIsHovered(false)}
+                                        >
+                                            <div className="premium-text">{premiumText}</div>
+                                        </button>
+                                    </a>
+                                ) : (
+                                    <button
+                                        className="premium-button"
+                                        onMouseEnter={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)}
+                                    >
+                                        <div className="premium-text">{premiumText}</div>
                                     </button>
-                                </a>
+                                )}
                             </div>
                             <div className="col d-flex flex-row align-items-center justify-content-end">
                                 <Dropdown>

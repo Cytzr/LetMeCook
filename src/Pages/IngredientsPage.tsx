@@ -113,7 +113,7 @@ function IngredientsPage() {
     };
 
     const postRecipe = () => {
-        const auth = AuthenticationCheck(navigate, '/recipes');
+        const auth = AuthenticationCheck(navigate, '/recipes', true);
         if (!auth) {
             return;
         }
@@ -212,9 +212,9 @@ function IngredientsPage() {
                     <Col>
                         <Row>
                             <Col className="d-flex align-items-center justify-content-end">
-                                <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
-                                <div style={{ width: "1vw" }}></div>
-                                <button type="button" className="btn btn-secondary rounded-pill px-4" onClick={postRecipe}>Post Recipe</button>
+                                {/*<button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>*/}
+                                {/*<div style={{ width: "1vw" }}></div>*/}
+                                <button type="button" className="btn btn-secondary rounded-pill px-5" onClick={postRecipe}>Post Recipe</button>
                             </Col>
                         </Row>
                     </Col>

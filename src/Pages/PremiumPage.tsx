@@ -6,13 +6,47 @@ import { BsFillXCircleFill } from "react-icons/bs";
 import "../Styles/premium-page.css"
 import { useState } from "react";
 import QRCode from "react-qr-code";
-
+import axios from "axios";
+import Swal from 'sweetalert2';
+import {useNavigate} from "react-router-dom";
 function PremiumPage() {
     const [Basic, setBasic] = useState(false);
     const [Gourmet, setGourmet] = useState(false);
     const [Michellin, setMichellin] = useState(false);
-
+    const loginDataString = localStorage.getItem('login_data');
+    const loginData = loginDataString ? JSON.parse(loginDataString) : null;
     const [showModal, setShowModal] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const setPremium = async () => {
+        try {
+            const response = await axios.post(`http://localhost:8000/api/user/set-premium/${loginData.user_id}`);
+
+            if (response.data.error === 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Premium status has been set successfully!',
+                }).then(() => {
+                    // Save data to local storage
+                    localStorage.setItem('login_data', JSON.stringify(response.data.data));
+
+                    // Navigate and reload the page only after the success modal is closed
+                    navigate('../');
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while setting premium status.',
+                });
+                return;
+            }
+            setShowModal(false);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
     return (
         <>
             <CustomNavbar />
@@ -163,7 +197,7 @@ function PremiumPage() {
                         </Col>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="success" onClick={() => setShowModal(false)}>
+                        <Button variant="success" onClick={() => setPremium()}>
                             Finish Payment
                         </Button>
                         <Button variant="danger" onClick={() => setShowModal(false)}>

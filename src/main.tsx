@@ -79,7 +79,7 @@ const router = createBrowserRouter([
     element: <MyRecipe/>
   },
   {
-    path: "/expert-detail/:doctorId",
+    path: "/expert-detail/:expertId",
     element: <ExpertDetail />
   },
   {
