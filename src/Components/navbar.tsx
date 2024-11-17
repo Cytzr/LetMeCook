@@ -34,6 +34,9 @@ function CustomNavbar() {
                         <div className="col">
                             <a href="/experts"><button className={`navbar-button ${isActive('/experts') ? 'active' : ''}`}>Our Experts</button></a>
                         </div>
+                        <div className="col">
+                            <a href="/bmi-calculator"><button className={`navbar-button ${isActive('/bmi-calculator') ? 'active' : ''}`}>BMI Calculator</button></a>
+                        </div>
                     </div>
                 </div>
                 <div className="col-4">
@@ -42,7 +45,7 @@ function CustomNavbar() {
 
                         {!loginData && (<div>
                             <div className="col-10 d-flex align-items-center justify-content-end mr-1 cursor-pointer" onClick={toLoginPage}>
-                              Sign in
+                                Sign in
                             </div>
                             <div className="col-1"></div>
                         </div>)}
