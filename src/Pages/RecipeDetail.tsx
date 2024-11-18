@@ -227,7 +227,7 @@ function RecipeDetail() {
                                             nutritionsData.map((nutrient, key) => (
                                                 <td key={key} className="text-center">
                                                     <div style={{ padding: "0.5vw" }}></div>
-                                                    <p>{nutrient.name}</p>
+                                                    <p>{nutrient.category_name}</p>
                                                     <p>{nutrient.amount} grams</p>
                                                 </td>
                                             ))
@@ -282,7 +282,7 @@ function RecipeDetail() {
                                             marginBottom: "1vw"
                                         }}
                                     >
-                                        <h2>Comments</h2>
+                                        {forum.length > 0 ? (<h2>Comments</h2>) : (<div></div>)}
                                     </div>
                                 </Col>
                             </Row>
