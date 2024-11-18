@@ -10,49 +10,14 @@ import CommentCard from "../Components/comment-card";
 import { useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-
-const comments: CommentsProps[] = [
-    {
-        commenterID: "user123",
-        commenterImage: "../src/Images/RecipePlaceholderImage.png",
-        commenterName: "Alice Johnson",
-        comment: "This recipe turned out amazing! I added a bit more spice, and it was perfect.",
-        isDoctor: false,
-    },
-    {
-        commenterID: "user456",
-        commenterImage: "../src/Images/RecipePlaceholderImage.png",
-        commenterName: "Dr. Sarah Brown",
-        comment: "Great recipe! For a healthier version, consider using Greek yogurt instead of cream.",
-        isDoctor: true,
-    },
-    {
-        commenterID: "user789",
-        commenterImage: "../src/Images/RecipePlaceholderImage.png",
-        commenterName: "Michael Lee",
-        comment: "Tried it last night, and my family loved it! Thanks for sharing!",
-        isDoctor: false,
-    },
-    {
-        commenterID: "user101",
-        commenterImage: "../src/Images/RecipePlaceholderImage.png",
-        commenterName: "Dr. Emily White",
-        comment: "If anyone has dietary restrictions, you can use coconut cream as a substitute for dairy cream.",
-        isDoctor: true,
-    },
-    {
-        commenterID: "user202",
-        commenterImage: "../src/Images/RecipePlaceholderImage.png",
-        commenterName: "John Doe",
-        comment: "Simple and delicious! Will definitely make this again.",
-        isDoctor: false,
-    }
-];
+import Swal from 'sweetalert2';
 
 function RecipeDetail() {
     const { recipeId } = useParams();
     const loginDataString = localStorage.getItem('login_data');
+    const [commentText, setCommentText] = useState('');
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
+    const [forum, setForum] = useState<CommentsProps[]>([]);
     const [image, setImage] = useState<File | null>(null);
     const [ingredientData, setIngredientData] = useState<IngredientProps[]>([]);
     const [nutritionsData, setNutritionInfo] = useState<NutrientsContainedProps[]>([]);
@@ -81,8 +46,62 @@ function RecipeDetail() {
             console.error("Error fetching recommended items:", error);
         }
     };
+    const getForum = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/forum/get-comment', {
+                recipe_id: recipeId,
+                user_id:  loginData.user_id
+            });
+            const data = response.data.data;
+            setForum(data as CommentsProps[]);
+
+            console.log(forum);
+        } catch (error) {
+            console.error("Error fetching recommended items:", error);
+        }
+    };
+    const addComment = async () => {
+        if (!commentText.trim()) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'Comment cannot be empty!',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        try {
+            const response = await axios.post('http://localhost:8000/api/forum/post', {
+                recipe_id: parseInt(recipeId),
+                comment: commentText,
+                user_id: loginData.user_id
+            });
+
+            if (response.data.error === 0) {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Your comment has been posted!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    getForum();
+                    setCommentText('');
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: response.data.message || 'Something went wrong. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error("Error adding comment:", error);
+        }
+    };
     useEffect(() => {
         getIngredientList();
+        getForum();
     }, []);
     return (
         <>
@@ -208,7 +227,7 @@ function RecipeDetail() {
                                             nutritionsData.map((nutrient, key) => (
                                                 <td key={key} className="text-center">
                                                     <div style={{ padding: "0.5vw" }}></div>
-                                                    <p>{nutrient.name}</p>
+                                                    <p>{nutrient.category_name}</p>
                                                     <p>{nutrient.amount} grams</p>
                                                 </td>
                                             ))
@@ -253,7 +272,7 @@ function RecipeDetail() {
 
                         {/* Comments */}
                         <Col className="dp-flex align-items-center justify-content-center pb-4">
-                            <Row style={{ paddingLeft: "9.5%" }}>
+                            <Row style={{paddingLeft: "9.5%"}}>
                                 <Col>
                                     <div
                                         style={{
@@ -263,26 +282,68 @@ function RecipeDetail() {
                                             marginBottom: "1vw"
                                         }}
                                     >
-                                        <h2>Comments</h2>
+                                        {forum.length > 0 ? (<h2>Comments</h2>) : (<div></div>)}
                                     </div>
                                 </Col>
                             </Row>
-                            {comments.map((item, key) => (
-                                <CommentCard
-                                    key={key}
-                                    comment={item.comment}
-                                    commenterID={item.commenterID}
-                                    commenterImage={item.commenterImage}
-                                    isDoctor={item.isDoctor}
-                                    commenterName={item.commenterName}
-                                />
-                            ))}
+                            {forum.length > 0 ? (
+                                forum.map((item, key) => (
+                                    <CommentCard
+                                        key={key}
+                                        forum_comment_id={item.forum_comment_id}
+                                        comment={item.comment}
+                                        user_id={item.user_id}
+                                        commenterImage={item.commenterImage ? item.commenterImage : "../src/Images/RecipePlaceHolderImage.png"}
+                                        is_expert={item.is_expert}
+                                        username={item.username}
+                                        likes={item.likes}
+                                        like_amount={item.like_amount}
+                                        onLikeDislike={getForum}
+                                    />
+                                ))
+                            ) : (<div></div>)}
+
                         </Col>
+                        {recipe.user_id != loginData.user_id ? (
+                                <Col style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                                    <div style={{marginTop: "1vw", width: "80%"}}>
+                                  <textarea
+                                      value={commentText}
+                                      onChange={(e) => setCommentText(e.target.value)}
+                                      placeholder="Write a comment..."
+                                      style={{
+                                          width: "100%",
+                                          height: "5vw",
+                                          padding: "0.5vw",
+                                          borderRadius: "5px",
+                                          border: "1px solid #ccc",
+                                          resize: "none"
+                                      }}
+                                  ></textarea>
+                                        <button
+                                            className="btn btn-primary"
+                                            style={{
+                                                marginTop: "0.5vw",
+                                                marginBottom: "0.5vw",
+                                                padding: "0.5vw 1vw",
+                                                borderRadius: "5px",
+                                                fontSize: "1vw"
+                                            }}
+                                            onClick={addComment}
+                                        >
+                                            Post Comment
+                                        </button>
+                                    </div>
+                                </Col>
+                            ) :
+                            (<div></div>)
+                        }
+
                     </Container>
-                    <Footer />
+                    <Footer/>
                 </>
             ) : (
-                <div className="text-center" style={{ marginTop: "20vw" }}>
+                <div className="text-center" style={{marginTop: "20vw"}}>
                     <h3>Wait for a moment...</h3>
                 </div>
             )}

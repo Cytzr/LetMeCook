@@ -8,6 +8,7 @@ import { MdFastfood } from "react-icons/md";
 import { GoTriangleDown } from "react-icons/go";
 import { useNavigate } from 'react-router-dom'; 
 import axios from "axios";
+import AuthenticationCheck from "../Components/authentication-check.tsx";
 
 
 interface CategoryInterface {
@@ -112,6 +113,10 @@ function IngredientsPage() {
     };
 
     const postRecipe = () => {
+        const auth = AuthenticationCheck(navigate, '/recipes', true);
+        if (!auth) {
+            return;
+        }
         const ingredient = localStorage.getItem('ingredients');
         const ingredientData = ingredient ? JSON.parse(ingredient) : null;
         if (ingredientData) {
@@ -207,9 +212,9 @@ function IngredientsPage() {
                     <Col>
                         <Row>
                             <Col className="d-flex align-items-center justify-content-end">
-                                <button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>
-                                <div style={{ width: "1vw" }}></div>
-                                <button type="button" className="btn btn-secondary rounded-pill px-4" onClick={postRecipe}>Post Recipe</button>
+                                {/*<button type="button" className="btn btn-secondary rounded-pill px-4">Find Recipe</button>*/}
+                                {/*<div style={{ width: "1vw" }}></div>*/}
+                                <button type="button" className="btn btn-secondary rounded-pill px-5" onClick={postRecipe}>Post Recipe</button>
                             </Col>
                         </Row>
                     </Col>

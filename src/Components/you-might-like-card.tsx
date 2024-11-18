@@ -12,9 +12,12 @@ const navigate = useNavigate();
     const loginDataString = localStorage.getItem('login_data');
     const loginData = loginDataString ? JSON.parse(loginDataString) : null;
 const saveRecipe = async () => {
-   AuthenticationCheck(navigate, '/recipes');
-
+  const authenticate = AuthenticationCheck(navigate, '/recipes');
+  if (!authenticate) {
+      return;
+  }
     try {
+        Swal.showLoading();
         const response = await axios.post('http://localhost:8000/api/recipe/favorite/add', {
             user_id: loginData.user_id,
             recipe_id: FoodID
@@ -36,7 +39,6 @@ const saveRecipe = async () => {
                 confirmButtonText: 'OK'
             }).then(() => {
                 Swal.close();
-                localStorage.removeItem('ingredients');
                 navigate('/recipes');
             });
         }
@@ -47,13 +49,19 @@ const saveRecipe = async () => {
     return;
 }
 const showDetail = async () => {
-    navigate(`/recipe-detail/${FoodID}`);
-    window.scrollTo(0, 0);
+    const auth = AuthenticationCheck(navigate, '/recipes');
+    console.log(auth);
+    if (!auth) {
+        return;
+    } else {
+        navigate(`/recipe-detail/${FoodID}`);
+        window.scrollTo(0, 0);
+    }
 }
     return (
         <>
-            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} onClick={showDetail}>
-                <Card.Img
+            <Card className="shadow-sm" style={{ maxWidth: "300px" , height:"380px"}} >
+                <Card.Img onClick={showDetail}
                     src={ImageLink}
                     alt={FoodName}
                     className="img-fluid rounded-top w-100 object-fit-cover"

@@ -71,15 +71,15 @@ const router = createBrowserRouter([
     // },
   },
   {
-    path: "/user-id/saved-menu",
+    path: "/saved-menu",
     element: <LikedRecipe />
   },
   {
-    path: "/myRecipe",
-    element: <MyRecipe />
+    path: "/my-recipe",
+    element: <MyRecipe/>
   },
   {
-    path: "/expert-detail/:doctorId",
+    path: "/expert-detail/:expertId",
     element: <ExpertDetail />
   },
   {
