@@ -35,7 +35,7 @@ function RecipeDetail() {
             setImage(data.recipe_image);
             setIngredientData(data.ingredient_list);
             const calory = {
-                name: "Calories",
+                category_name: "Calories",
                 amount: data.calories
             }
             setNutritionInfo([calory, ...data.nutrition_info]);
