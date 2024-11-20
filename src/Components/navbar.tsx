@@ -29,7 +29,7 @@ function CustomNavbar() {
                     <div className="row dp-flex align-items-center fw-bold">
                         <div className="col">
                             <a href="/" className="navbar-brand">
-                                <img src="..\src\Images\AppIconHalf.png" alt="" height={40} />
+                                <img src="..\src\Images\logoLetMeCook.png" alt="" height={70} />
                             </a>
                         </div>
                         <div className="col">
