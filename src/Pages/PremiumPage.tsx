@@ -136,7 +136,7 @@ function PremiumPage() {
                                 </div>
                             </Col>
                             <Col className="d-flex align-items-center justify-content-center">
-                                <button className="premium-button">Purchase Plan</button>
+                                <button className="premium-button"  onClick={() => setShowModal(true)}>Purchase Plan</button>
                             </Col>
                         </Col>
 

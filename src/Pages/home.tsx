@@ -31,7 +31,7 @@
             }
         };
         useEffect(() => {
-            getPopularRecipeList()
+            getPopularRecipeList();
         }, []);
         return (
             <><Navbar></Navbar>

@@ -7,6 +7,7 @@ import '../Styles/home.css'
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
 function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -30,11 +31,22 @@ function Login() {
         }
     };
     const login = async  () => {
+        // await requestNotificationPermission();
         Swal.showLoading()
-        const response = await axios.post('http://localhost:8000/api/user/login', {
-            username,
-            password,
-        });
+        const response = await axios.post(
+            'http://localhost:8080/user/login',
+            {
+                username,
+                password,
+            },
+            {
+                headers: {
+                    'Authorization': 'Bearer BHTNhJMcSLwHUyOoyzHDKHlYIcKBJ0SIU1UoeCifZf_jWn9vTmYTWwynnfnCKDM1keQGZhpAgCVgtor2DT-3uck',
+                    'Content-Type': 'application/json',
+                    'notif': 'dF396lyDDJnvmQibphL4VQ:APA91bGU6Lu9hcX_dMnACaLOdUjO1HqZSFBYEgLe4zueJK68NWFq-D5RbGD8MAwSsqxeywfg7B1FRFKRy9zSeLcq88LIdeEgV8tckcDln31I7SgvXjuVOLs',
+                },
+            }
+        );
         if (response.data.error == 1) {
             Swal.fire({
                 title: 'Invalid Credentials',
@@ -47,7 +59,7 @@ function Login() {
 
         } else {
             Swal.close();
-            localStorage.setItem('login_data', JSON.stringify(response.data.data))
+            localStorage.setItem('login_data', JSON.stringify(response.data))
             if (!redirectPage) {
                 navigate('/');
                 localStorage.removeItem('redirect');

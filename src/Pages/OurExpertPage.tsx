@@ -56,7 +56,7 @@ function OurExpertPage() {
             <br></br>
             <br></br>
             <button className="btn btn-dark rounded-pill">
-              <span className="fw-bolder px-4">Chat Now</span>
+               <span className="fw-bolder px-4">Chat Now</span>
             </button>
           </Col>
         </Row>)
